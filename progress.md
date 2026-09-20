@@ -88,11 +88,9 @@ screenshotted and reviewed in both before calling it done.
   remembering for any future data-heavy table UI: check what actually
   renders, not just that the code parses.
 
+- **2026-09-19 (same day) — Pushed and deployed.** `git init` + `gh repo create` (private first, then made public + Pages enabled on user confirmation, since Pages needs a public repo on this GitHub plan — same constraint hit with the `tarot` repo). Added the Cloudflare Web Analytics beacon (shares the `followorbounce.github.io` site/token). Live at https://followorbounce.github.io/world-calendar-explorer/, confirmed via `gh api .../pages/builds/latest` + a direct fetch showing the analytics beacon present.
+
 ## Next steps
-- Not yet a git repo / not yet pushed — say the word and this gets
-  `git init` + `gh repo create` + push, same as the other projects set up
-  this session (this account now has full GitHub access — see
-  `[[git-full-access-configured]]`).
 - The "Deliberately not built this pass" list in CLAUDE.md is long — say
   which one (if any) to tackle next. The world map and the true Chinese
   lunisolar calendar are the two biggest remaining lifts.

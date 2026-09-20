@@ -146,6 +146,7 @@ and real rather than padding out fake precision:
   reference date before shipping — every existing entry was.
 
 ## Deploy
-GitHub Pages from `main`, project-page URL under `followorbounce.github.io`
-(shares that Cloudflare Web Analytics site — see `[[cloudflare-analytics-setup]]`
-in the assistant's memory).
+Public repo, GitHub Pages from `main` root — live at
+https://followorbounce.github.io/world-calendar-explorer/. Shares the
+`followorbounce.github.io` Cloudflare Web Analytics site (see
+`[[cloudflare-analytics-setup]]` in the assistant's memory).
