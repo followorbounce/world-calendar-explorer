@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>World Calendar Explorer</title>
+<meta name="description" content="An interactive museum of human timekeeping — convert any Gregorian date into dozens of historically documented calendar systems, explore their astronomical foundations, and see how civilizations have measured time.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&family=Spectral:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bba4e16a7d9b4d9985eda0cda2624e60"}'></script>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="#dashboard" class="brand">
+      <svg class="glyph" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="1.4"/>
+        <circle cx="16" cy="16" r="1.6" fill="currentColor"/>
+        <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="1.4"/>
+        <line x1="16" y1="26" x2="16" y2="30" stroke="currentColor" stroke-width="1.4"/>
+        <line x1="2" y1="16" x2="6" y2="16" stroke="currentColor" stroke-width="1.4"/>
+        <line x1="26" y1="16" x2="30" y2="16" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M16 16 L23 10" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M16 16 L11 22" stroke="currentColor" stroke-width="1"/>
+      </svg>
+      World Calendar Explorer
+    </a>
+    <nav class="section-nav" id="sectionNav">
+      <a href="#dashboard">Dashboard</a>
+      <a href="#table">Conversion Table</a>
+      <a href="#converter">Converter</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#encyclopedia">Encyclopedia</a>
+      <a href="#astronomy">Astronomy</a>
+      <a href="#comparison">Comparison</a>
+      <a href="#eras">Eras &amp; Epochs</a>
+      <a href="#mathlab">Math Lab</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark/light theme">◐ Theme</button>
+  </div>
+</div>
+
+<main>
+
+  <!-- 1. DASHBOARD -->
+  <section id="dashboard">
+    <div class="wrap">
+      <div class="hero">
+        <div class="eyebrow">Human Timekeeping, Live</div>
+        <h1>What day is it — everywhere, and everywhen?</h1>
+        <p>The same instant, read through more than two dozen calendars built by civilizations across five thousand years. Pick any Gregorian date below to see it refracted through them all.</p>
+      </div>
+      <div class="dash-grid" id="dashGrid"></div>
+    </div>
+  </section>
+
+  <!-- 2. GLOBAL CONVERSION TABLE -->
+  <section id="table">
+    <div class="wrap">
+      <div class="section-head"><span class="section-num">2</span><h2>Global Calendar Conversion Table</h2></div>
+      <p class="section-sub">Every supported calendar system, evaluated for the date shown in the converter below. Filter by family to compare related systems.</p>
+      <div class="chip-row" id="tableFilters"></div>
+      <div class="panel table-scroll">
+        <table class="calendar-table" id="conversionTable">
+          <thead>
+            <tr><th>Calendar</th><th>Category</th><th>Representation</th><th>Year</th><th>Month</th><th>Day</th><th>Notes</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. INTERACTIVE CONVERTER -->
+  <section id="converter">
+    <div class="wrap">
+      <div class="section-head"><span class="section-num">3</span><h2>Interactive Date Converter</h2></div>
+      <p class="section-sub">Choose any Gregorian date (proleptic — the mathematics extends the modern calendar backward for dates before its 1582 adoption). Every section on this page updates from this one control.</p>
+      <div class="converter">
+        <div class="converter-input panel">
+          <label for="dateInput">Gregorian date</label>
+          <input type="date" id="dateInput">
+          <label for="timeInput">Time (for UTC / Unix / astronomical fields)</label>
+          <input type="text" id="timeInput" placeholder="HH:MM" value="12:00">
+          <div class="btn-row">
+            <button class="btn" id="todayBtn" type="button">Today</button>
+            <button class="btn secondary" id="copyBtn" type="button">Copy results</button>
+            <button class="btn secondary" id="shareBtn" type="button">Copy link</button>
+          </div>
+          <p class="small" id="copyStatus" aria-live="polite"></p>
+        </div>
+        <div class="result-grid" id="converterResults"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. TIMELINE -->
+  <section id="timeline">
+    <div class="wrap">
+      <div class="section-head"><span class="section-num">4</span><h2>World Calendar Timeline</h2></div>
+      <p class="section-sub">Origins, reforms, and transitions — the moments civilizations changed how they counted days.</p>
+      <div class="timeline" id="timelineList"></div>
+    </div>
+  </section>
+
+  <!-- 5. ENCYCLOPEDIA -->
+  <section id="encyclopedia">
+    <div class="wrap">
+      <div class="section-head"><span class="section-num">5</span><h2>Calendar Encyclopedia</h2></div>
+      <p class="section-sub">History, geography, religious context, astronomical basis, epoch, leap-year logic, and conversion method for every system on this page.</p>
+      <div class="chip-row" id="encycloFilters"></div>
+      <div class="encyclopedia-list" id="encyclopediaList"></div>
+    </div>
+  </section>
+
+  <!-- 6. ASTRONOMICAL FOUNDATIONS -->
+  <section id="astronomy">
+    <div class="wrap">
+      <div class="section-head"><span class="section-num">6</span><h2>Astronomical Foundations</h2></div>
+      <p class="section-sub">Every calendar is an attempt to reconcile three cycles that don't divide evenly into each other: the day, the lunar month, and the solar year.</p>
+      <div class="astro-grid">
+        <div class="astro-card panel">
+          <h3>The Solar Year &amp; the Seasons</h3>
+          <svg id="solarDiagram" viewBox="0 0 320 320"></svg>
+          <div class="astro-controls">
+            <input type="range" id="solarSlider" min="0" max="365" value="0">
+            <span class="astro-readout" id="solarReadout">Day 0</span>
+          </div>
+          <p class="astro-caption">Earth's elliptical orbit and 23.4° axial tilt produce the equinoxes and solstices that anchor most solar calendars. Drag to move Earth around its orbit.</p>
+        </div>
+        <div class="astro-card panel">
+          <h3>The Lunar Month</h3>
+          <svg id="lunarDiagram" viewBox="0 0 320 320"></svg>
+          <div class="astro-controls">
+            <input type="range" id="lunarSlider" min="0" max="29.53" step="0.1" value="0">
+            <span class="astro-readout" id="lunarReadout">Day 0.0</span>
+          </div>
+          <p class="astro-caption">The synodic month (new moon to new moon) averages 29.53 days — never a whole number, which is why every lunar and lunisolar calendar needs a correction scheme.</p>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:20px">
+        <h3>Key quantities</h3>
+        <div class="result-grid" id="astroFacts"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. COMPARISON ENGINE -->
+  <section id="comparison">
+    <div class="wrap">
+      <div class="section-head"><span class="section-num">7</span><h2>Calendar Comparison Engine</h2></div>
+      <p class="section-sub">Solar, lunar, and lunisolar calendars trade off simplicity against how well they track the seasons. "Drift" is how far a fixed calendar date wanders from its original astronomical anchor per century if left uncorrected.</p>
+      <div class="panel table-scroll">
+        <table class="calendar-table" id="comparisonTable">
+          <thead><tr><th>Calendar</th><th>Type</th><th>Average year length</th><th>Leap correction</th><th>Drift vs. tropical year</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. ERA / EPOCH EXPLORER -->
+  <section id="eras">
+    <div class="wrap">
+      <div class="section-head"><span class="section-num">9</span><h2>Era &amp; Epoch Explorer</h2></div>
+      <p class="section-sub">The same Gregorian date, read through the major year-counting systems layered on top of (or independent from) the calendars above.</p>
+      <div class="result-grid" id="eraResults"></div>
+    </div>
+  </section>
+
+  <!-- 10. MATH LAB -->
+  <section id="mathlab">
+    <div class="wrap">
+      <div class="section-head"><span class="section-num">10</span><h2>Mathematical Conversion Lab</h2></div>
+      <p class="section-sub">Every conversion on this page reduces to one pivot: the Julian Day Number (JDN), a single running count of days used by astronomers since 1583. Here's the arithmetic, worked for the date above.</p>
+      <div class="panel">
+        <h3>Gregorian date → Julian Day Number</h3>
+        <div class="formula-block" id="jdnFormula"></div>
+      </div>
+      <div class="panel" style="margin-top:16px">
+        <h3>Selected worked conversions</h3>
+        <div class="formula-block" id="workedFormulas"></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Built for education. Dates before a calendar's historical adoption are <em>proleptic</em> (mathematically extended backward) and shown for comparison only. Several systems are approximations of historically observational calendars — see each entry's notes in the Encyclopedia. No tracking of personal data; date selections stay in your browser.</p>
+</footer>
+
+<script src="js/core.js"></script>
+<script src="js/calendars/ancient.js"></script>
+<script src="js/calendars/asian.js"></script>
+<script src="js/calendars/abrahamic.js"></script>
+<script src="js/calendars/maya.js"></script>
+<script src="js/data/encyclopedia.js"></script>
+<script src="js/data/timeline.js"></script>
+<script src="js/registry.js"></script>
+<script src="js/astronomy.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
