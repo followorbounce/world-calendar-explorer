@@ -58,5 +58,9 @@ const CalMaya = (() => {
     };
   }
 
-  return { fromJDN, longCountFromTotal, formatLC, tzolkin, haab, CORRELATION };
+  function toJDN(baktun, katun, tun, uinal, kin) {
+    return baktun * 144000 + katun * 7200 + tun * 360 + uinal * 20 + kin + CORRELATION;
+  }
+
+  return { fromJDN, toJDN, longCountFromTotal, formatLC, tzolkin, haab, CORRELATION, DAY_SIGNS, HAAB_MONTHS };
 })();

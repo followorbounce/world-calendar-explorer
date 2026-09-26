@@ -1,10 +1,11 @@
 # World Calendar Explorer
 
-A single-page, museum-exhibit-style educational site: convert any Gregorian
-date into 28 historically documented calendar/era systems, with real
-(not simulated) astronomical diagrams, a full mathematical conversion lab,
-an encyclopedia entry per system, and a chronological timeline. No build
-step, no framework — plain HTML/CSS/JS.
+A single-page, museum-exhibit-style educational site: convert dates between
+any of 10 bidirectional calendar systems (and display in all 28 supported
+systems), with real (not simulated) astronomical diagrams, a full
+mathematical conversion lab, an encyclopedia entry per system, a
+chronological timeline, and a poster-export feature. No build step, no
+framework — plain HTML/CSS/JS.
 
 ## Design
 "Observatory instrument / antique scientific atlas" aesthetic, deliberately
@@ -27,7 +28,9 @@ table labels). All from Google Fonts.
   Assyrian, Egyptian Civil, Olympiad, Seleucid, French Republican,
   Discordian, Holocene, Astronomical Year Numbering. All exact/well-defined
   epoch-offset or 30-day+epagomenal-day arithmetic, verified against known
-  reference dates (e.g. Coptic New Year 2025) before use.
+  reference dates (e.g. Coptic New Year 2025) before use. Now also exports
+  `copticToJDN`, `ethiopianToJDN`, `frenchRepToJDN` for the any-to-any
+  converter, plus month-name arrays.
   Ancient Roman calendar, Julian Reform, and (fully) Ancient Greek Olympiad
   civil dating are covered as **encyclopedia content only** — they were
   never continuously-defined arithmetic systems, so a "live converter" for
@@ -48,11 +51,15 @@ table labels). All from Google Fonts.
   incomplete — see below).
 - `js/calendars/maya.js` — Long Count / Tzolk'in / Haab', byte-for-byte
   the same GMT 584283 correlation and algorithm as the `Maya-Calendar` repo.
+  Now also exports `toJDN(baktun, katun, tun, uinal, kin)` for the
+  any-to-any converter.
 - `js/registry.js` — the central `CALENDARS` array: every system's key,
   display name, category, and a `compute(ctx)` function. `ctx = { jdn, y,
   m, d, isBCE, weekday, hoursUTC }`, built once per selected date in
   `app.js`. This is what the dashboard, conversion table, converter, and
-  era explorer all iterate over.
+  era explorer all iterate over. Also exports `SOURCES` — the 10
+  bidirectional calendar systems with their month names and field
+  definitions, used by the any-to-any converter UI.
 - `js/data/encyclopedia.js` — history/use/religious-context/astronomical-
   basis/epoch/leap-logic/method for every calendar in the registry.
 - `js/data/timeline.js` — 28 chronological entries (3114 BCE Maya era-base
@@ -63,12 +70,15 @@ table labels). All from Google Fonts.
   at four checkpoints (new/first-quarter/full/last-quarter) before use —
   see progress.md for the derivation.
 - `js/app.js` — wires everything to the DOM: dashboard (live-updating
-  clock), conversion table (with category filter chips), converter,
+  clock), conversion table (with category filter chips), converter
+  (now with a source-calendar dropdown for any-to-any conversion, dynamic
+  input fields per calendar, and Maya Long Count 5-field input),
   timeline, encyclopedia (with filter chips, `<details>` accordion),
   astronomy diagram sliders, comparison-engine table, era/epoch explorer,
   math lab (renders the actual JDN arithmetic for the selected date, plus
   a couple of worked non-trivial conversions), theme toggle (persisted to
-  `localStorage`), scroll-spy nav.
+  `localStorage`), scroll-spy nav, poster export (Canvas API → PNG
+  download), and Maya result links to the sibling Maya-Calendar site.
 
 ## Sourcing & verification
 Every non-trivial algorithm was either (a) independently re-derived and

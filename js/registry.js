@@ -150,5 +150,18 @@ const Registry = (() => {
     });
   }
 
-  return { CALENDARS, CATEGORIES, computeAll };
+  const SOURCES = [
+    { key: "gregorian", name: "Gregorian", months: Core.MONTH_NAMES, hasDay: true, fields: ["year", "month", "day"] },
+    { key: "julian", name: "Julian", months: Core.MONTH_NAMES, hasDay: true, fields: ["year", "month", "day"] },
+    { key: "hebrew", name: "Hebrew", months: ["Nisan", "Iyar", "Sivan", "Tammuz", "Av", "Elul", "Tishrei", "Cheshvan", "Kislev", "Tevet", "Shevat", "Adar", "Adar II"], hasDay: true, fields: ["year", "month", "day"] },
+    { key: "islamic", name: "Islamic (Tabular)", months: ["Muharram", "Safar", "Rabiʻ I", "Rabiʻ II", "Jumada I", "Jumada II", "Rajab", "Shaʻban", "Ramadan", "Shawwal", "Dhu al-Qiʻdah", "Dhu al-Hijjah"], hasDay: true, fields: ["year", "month", "day"] },
+    { key: "persian", name: "Persian (Solar Hijri)", months: ["Farvardin", "Ordibehesht", "Khordad", "Tir", "Mordad", "Shahrivar", "Mehr", "Aban", "Azar", "Dey", "Bahman", "Esfand"], hasDay: true, fields: ["year", "month", "day"] },
+    { key: "indian", name: "Indian National (Saka)", months: ["Chaitra", "Vaishakha", "Jyaishtha", "Ashadha", "Shravana", "Bhadra", "Ashwin", "Kartika", "Agrahayana", "Pausha", "Magha", "Phalguna"], hasDay: true, fields: ["year", "month", "day"] },
+    { key: "coptic", name: "Coptic", months: ["Thout", "Paopi", "Hathor", "Koiak", "Tobi", "Meshir", "Paremhat", "Paremoude", "Pashons", "Paoni", "Epip", "Mesori", "Pi Kogi Enavot"], hasDay: true, fields: ["year", "month", "day"] },
+    { key: "ethiopian", name: "Ethiopian", months: ["Meskerem", "Tikimt", "Hidar", "Tahsas", "Tir", "Yekatit", "Megabit", "Miazia", "Ginbot", "Sene", "Hamle", "Nehase", "Pagume"], hasDay: true, fields: ["year", "month", "day"] },
+    { key: "frenchrep", name: "French Republican", months: ["Vendémiaire", "Brumaire", "Frimaire", "Nivôse", "Pluviôse", "Ventôse", "Germinal", "Floréal", "Prairial", "Messidor", "Thermidor", "Fructidor", "Sansculottides"], hasDay: true, fields: ["year", "month", "day"] },
+    { key: "maya", name: "Maya Long Count", months: null, hasDay: false, fields: ["baktun", "katun", "tun", "uinal", "kin"] },
+  ];
+
+  return { CALENDARS, CATEGORIES, SOURCES, computeAll };
 })();

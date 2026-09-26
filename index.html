@@ -78,17 +78,23 @@
   <section id="converter">
     <div class="wrap">
       <div class="section-head"><span class="section-num">3</span><h2>Interactive Date Converter</h2></div>
-      <p class="section-sub">Choose any Gregorian date (proleptic — the mathematics extends the modern calendar backward for dates before its 1582 adoption). Every section on this page updates from this one control.</p>
+      <p class="section-sub">Convert from any supported calendar system. Pick a source calendar and enter a date — every section on this page updates from this one control.</p>
       <div class="converter">
         <div class="converter-input panel">
-          <label for="dateInput">Gregorian date</label>
-          <input type="date" id="dateInput">
+          <label for="sourceCalendar">Source calendar</label>
+          <select id="sourceCalendar"></select>
+          <div id="gregorianInputs">
+            <label for="dateInput">Gregorian date</label>
+            <input type="date" id="dateInput">
+          </div>
+          <div id="sourceInputs" class="source-fields" style="display:none"></div>
           <label for="timeInput">Time (for UTC / Unix / astronomical fields)</label>
           <input type="text" id="timeInput" placeholder="HH:MM" value="12:00">
           <div class="btn-row">
             <button class="btn" id="todayBtn" type="button">Today</button>
             <button class="btn secondary" id="copyBtn" type="button">Copy results</button>
             <button class="btn secondary" id="shareBtn" type="button">Copy link</button>
+            <button class="btn secondary" id="posterBtn" type="button">Save as poster</button>
           </div>
           <p class="small" id="copyStatus" aria-live="polite"></p>
         </div>

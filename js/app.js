@@ -10,29 +10,140 @@
 
   const dateInput = $("#dateInput");
   const timeInput = $("#timeInput");
+  const sourceCalendar = $("#sourceCalendar");
+  const gregorianInputs = $("#gregorianInputs");
+  const sourceInputs = $("#sourceInputs");
+
+  const MAYA_BASE = "https://followorbounce.github.io/Maya-Calendar/";
 
   function todayParts() {
     const now = new Date();
     return { y: now.getFullYear(), m: now.getMonth() + 1, d: now.getDate() };
   }
 
-  function currentSelection() {
-    let y, m, d;
-    if (dateInput.value) {
-      const [yy, mm, dd] = dateInput.value.split("-").map(Number);
-      y = yy; m = mm; d = dd;
+  /* ---------- Source calendar selector ---------- */
+  function initSourceSelector() {
+    const sel = sourceCalendar;
+    Registry.SOURCES.forEach((s) => {
+      const opt = document.createElement("option");
+      opt.value = s.key;
+      opt.textContent = s.name;
+      sel.appendChild(opt);
+    });
+    sel.addEventListener("change", () => {
+      const src = sel.value;
+      if (src === "gregorian") {
+        gregorianInputs.style.display = "";
+        sourceInputs.style.display = "none";
+        sourceInputs.innerHTML = "";
+      } else {
+        gregorianInputs.style.display = "none";
+        sourceInputs.style.display = "";
+        buildSourceFields(src);
+      }
+      updateAll();
+    });
+  }
+
+  function buildSourceFields(key) {
+    const src = Registry.SOURCES.find((s) => s.key === key);
+    if (!src) return;
+    sourceInputs.innerHTML = "";
+
+    if (src.key === "maya") {
+      src.fields.forEach((f) => {
+        const div = document.createElement("div");
+        div.className = "field-group";
+        div.innerHTML = `<label>${f.charAt(0).toUpperCase() + f.slice(1)}</label>
+          <input type="number" data-field="${f}" value="${f === "baktun" ? 13 : 0}" min="0">`;
+        sourceInputs.appendChild(div);
+      });
     } else {
-      ({ y, m, d } = todayParts());
+      const yearDiv = document.createElement("div");
+      yearDiv.className = "field-group";
+      yearDiv.innerHTML = `<label>Year</label><input type="number" data-field="year" value="2026">`;
+      sourceInputs.appendChild(yearDiv);
+
+      if (src.months) {
+        const monthDiv = document.createElement("div");
+        monthDiv.className = "field-group";
+        const opts = src.months.map((m, i) => `<option value="${i + 1}">${m}</option>`).join("");
+        monthDiv.innerHTML = `<label>Month</label><select data-field="month">${opts}</select>`;
+        sourceInputs.appendChild(monthDiv);
+      }
+
+      if (src.hasDay) {
+        const dayDiv = document.createElement("div");
+        dayDiv.className = "field-group";
+        dayDiv.innerHTML = `<label>Day</label><input type="number" data-field="day" value="1" min="1" max="31">`;
+        sourceInputs.appendChild(dayDiv);
+      }
     }
+
+    sourceInputs.querySelectorAll("input, select").forEach((el) => {
+      el.addEventListener("change", updateAll);
+    });
+  }
+
+  function sourceToJDN(key) {
+    const fields = {};
+    sourceInputs.querySelectorAll("[data-field]").forEach((el) => {
+      fields[el.dataset.field] = Number(el.value);
+    });
+
+    switch (key) {
+      case "gregorian": return Core.gregorianToJDN(fields.year, fields.month, fields.day);
+      case "julian": return Core.julianToJDN(fields.year, fields.month, fields.day);
+      case "hebrew": return CalAbrahamic.hebrewToJDN(fields.year, fields.month, fields.day);
+      case "islamic": return CalAbrahamic.islamicToJDN(fields.year, fields.month, fields.day);
+      case "persian": return CalAsian.persianToJDN(fields.year, fields.month, fields.day);
+      case "indian": return CalAsian.indianCivilToJDN(fields.year, fields.month, fields.day);
+      case "coptic": return CalAncient.copticToJDN(fields.year, fields.month, fields.day);
+      case "ethiopian": return CalAncient.ethiopianToJDN(fields.year, fields.month, fields.day);
+      case "frenchrep": return CalAncient.frenchRepToJDN(fields.year, fields.month, fields.day);
+      case "maya": return CalMaya.toJDN(fields.baktun, fields.katun, fields.tun, fields.uinal, fields.kin);
+      default: return null;
+    }
+  }
+
+  function currentSelection() {
+    const key = sourceCalendar.value;
     let h = 12, min = 0;
     const t = (timeInput.value || "12:00").split(":").map(Number);
     if (t.length === 2 && !Number.isNaN(t[0])) { h = t[0]; min = t[1]; }
-    return { y, m, d, hoursUTC: h + min / 60 };
+
+    if (key === "gregorian") {
+      let y, m, d;
+      if (dateInput.value) {
+        const [yy, mm, dd] = dateInput.value.split("-").map(Number);
+        y = yy; m = mm; d = dd;
+      } else {
+        ({ y, m, d } = todayParts());
+      }
+      return { y, m, d, hoursUTC: h + min / 60, source: "gregorian" };
+    }
+
+    const jdn = sourceToJDN(key);
+    if (jdn == null || !Number.isFinite(jdn)) {
+      const tp = todayParts();
+      return { y: tp.y, m: tp.m, d: tp.d, hoursUTC: h + min / 60, source: "gregorian" };
+    }
+    const g = Core.jdnToGregorian(jdn);
+    return { y: g.y, m: g.m, d: g.d, hoursUTC: h + min / 60, source: key };
   }
 
   function buildContext(sel) {
     const jdn = Core.gregorianToJDN(sel.y, sel.m, sel.d);
     return { jdn, y: sel.y, m: sel.m, d: sel.d, isBCE: false, hoursUTC: sel.hoursUTC, weekday: Core.weekdayFromJDN(jdn) };
+  }
+
+  /* ---------- Maya link helpers ---------- */
+  function mayaLinkedValue(r) {
+    if (!r.longCount) return fmtResult(r);
+    const lcLink = `<a class="maya-link" href="${MAYA_BASE}long-count.html" target="_blank" title="Learn about the Long Count">${r.longCount}</a>`;
+    const tzLink = `<a class="maya-link" href="${MAYA_BASE}tzolkin.html" target="_blank" title="Learn about the Tzolk'in">${r.tzolkin}</a>`;
+    const haabLink = `<a class="maya-link" href="${MAYA_BASE}haab.html" target="_blank" title="Learn about the Haab'">${r.haab}</a>`;
+    return `${lcLink} &mdash; ${tzLink}, ${haabLink}`;
   }
 
   function fmtResult(r) {
@@ -44,6 +155,11 @@
     else if (r.month != null) parts.push(`M${r.month}`);
     if (r.year != null) parts.push(r.year);
     return parts.length ? parts.join(" ") : "—";
+  }
+
+  function fmtResultHTML(r) {
+    if (r.key === "maya" && r.longCount) return mayaLinkedValue(r);
+    return fmtResult(r);
   }
 
   /* ---------- 1. Dashboard ---------- */
@@ -84,7 +200,7 @@
       <tr>
         <td>${r.name}</td>
         <td class="category">${r.categoryLabel}</td>
-        <td>${fmtResult(r)}</td>
+        <td>${fmtResultHTML(r)}</td>
         <td>${r.year ?? "—"}</td>
         <td>${r.monthName || (r.month ?? "—")}</td>
         <td>${r.day ?? "—"}</td>
@@ -98,7 +214,7 @@
     $("#converterResults").innerHTML = results.map((r) => `
       <div class="result-card">
         <div class="cal-name">${r.name}</div>
-        <div class="cal-value">${fmtResult(r)}</div>
+        <div class="cal-value">${fmtResultHTML(r)}</div>
         ${r.note ? `<div class="cal-note">${r.note}</div>` : (r.era ? `<div class="cal-note">${r.era}</div>` : "")}
       </div>`).join("");
   }
@@ -165,7 +281,7 @@
       $("#solarReadout").textContent = `Day ${v}`;
     });
 
-    const knownNewMoon = Core.gregorianToJDN(2000, 1, 6); // 6 Jan 2000 ~ new moon reference
+    const knownNewMoon = Core.gregorianToJDN(2000, 1, 6);
     const daysSinceNew = Core.mod(ctx.jdn - knownNewMoon, Astronomy.SYNODIC_MONTH);
     $("#lunarSlider").value = daysSinceNew.toFixed(1);
     Astronomy.updateLunarDiagram(lunarSvg, daysSinceNew);
@@ -182,7 +298,7 @@
       { label: "Synodic month", value: `${Astronomy.SYNODIC_MONTH.toFixed(5)} days`, sub: "new moon to new moon — what lunar calendars track" },
       { label: "Sidereal month", value: "27.32166 days", sub: "one orbit of the Moon relative to the stars" },
       { label: "Axial tilt", value: "23.44°", sub: "the obliquity that produces the seasons" },
-      { label: "Precession cycle", value: "~25,772 years", sub: "the slow wobble of Earth's axis (Hipparchus, 2nd c. BCE)" },
+      { label: "Precession cycle", value: "~25,772 years", sub: "the slow wobble of Earth’s axis (Hipparchus, 2nd c. BCE)" },
     ].map((f) => `<div class="dash-card"><div class="label">${f.label}</div><div class="value">${f.value}</div><div class="sub">${f.sub}</div></div>`).join("");
   }
 
@@ -259,6 +375,97 @@ Islamic (Tabular) — direct closed form:
   Result: ${isl.year} AH, ${isl.monthName} ${isl.day} (${isl.isLeapYear ? "leap" : "common"} year of the 30-year cycle)`;
   }
 
+  /* ---------- Poster generation ---------- */
+  function generatePoster(ctx) {
+    const results = Registry.computeAll(ctx);
+    const dpr = window.devicePixelRatio || 1;
+    const W = 800, H = 1200;
+    const canvas = document.createElement("canvas");
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    const c = canvas.getContext("2d");
+    c.scale(dpr, dpr);
+
+    const isDark = document.documentElement.getAttribute("data-theme") === "dark" ||
+      (!document.documentElement.getAttribute("data-theme") && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+    const bg = isDark ? "#14171f" : "#f4efe1";
+    const ink = isDark ? "#ece4cf" : "#1c1a14";
+    const dim = isDark ? "#a99f80" : "#5a5644";
+    const brass = isDark ? "#c9a24b" : "#9c7a2e";
+    const line = isDark ? "#333a49" : "#c9bd9a";
+
+    c.fillStyle = bg;
+    c.fillRect(0, 0, W, H);
+
+    c.fillStyle = brass;
+    c.font = "bold 11px 'IBM Plex Mono', monospace";
+    c.textAlign = "center";
+    c.fillText("WORLD CALENDAR EXPLORER", W / 2, 40);
+
+    c.fillStyle = ink;
+    c.font = "bold 28px 'Spectral', Georgia, serif";
+    const gregDate = `${ctx.y}-${String(ctx.m).padStart(2, "0")}-${String(ctx.d).padStart(2, "0")}`;
+    c.fillText(gregDate, W / 2, 80);
+
+    c.fillStyle = dim;
+    c.font = "14px 'Inter', sans-serif";
+    c.fillText(`JDN ${ctx.jdn}  ·  ${Core.weekdayName(ctx.jdn)}`, W / 2, 105);
+
+    c.strokeStyle = line;
+    c.lineWidth = 1;
+    c.beginPath();
+    c.moveTo(40, 120);
+    c.lineTo(W - 40, 120);
+    c.stroke();
+
+    c.textAlign = "left";
+    let y = 150;
+    const lineH = 28;
+    const colName = 50;
+    const colVal = 300;
+
+    results.forEach((r) => {
+      if (y + lineH > H - 50) return;
+
+      c.fillStyle = brass;
+      c.font = "10px 'IBM Plex Mono', monospace";
+      c.fillText(r.name.toUpperCase(), colName, y);
+
+      c.fillStyle = ink;
+      c.font = "13px 'IBM Plex Mono', monospace";
+      const val = fmtResult(r);
+      const maxW = W - colVal - 50;
+      if (c.measureText(val).width > maxW) {
+        c.font = "11px 'IBM Plex Mono', monospace";
+      }
+      c.fillText(val, colVal, y);
+
+      y += lineH;
+    });
+
+    c.strokeStyle = line;
+    c.beginPath();
+    c.moveTo(40, y + 10);
+    c.lineTo(W - 40, y + 10);
+    c.stroke();
+
+    c.fillStyle = dim;
+    c.font = "10px 'Inter', sans-serif";
+    c.textAlign = "center";
+    c.fillText("followorbounce.github.io/world-calendar-explorer", W / 2, y + 35);
+
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `calendar-${gregDate}.png`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+    }, "image/png");
+  }
+
   /* ---------- theme + nav ---------- */
   function initTheme() {
     const saved = localStorage.getItem("wce-theme");
@@ -290,6 +497,12 @@ Islamic (Tabular) — direct closed form:
   function initConverterButtons() {
     $("#todayBtn").addEventListener("click", () => {
       const t = todayParts();
+      if (sourceCalendar.value !== "gregorian") {
+        sourceCalendar.value = "gregorian";
+        gregorianInputs.style.display = "";
+        sourceInputs.style.display = "none";
+        sourceInputs.innerHTML = "";
+      }
       dateInput.value = `${t.y}-${String(t.m).padStart(2, "0")}-${String(t.d).padStart(2, "0")}`;
       updateAll();
     });
@@ -308,6 +521,9 @@ Islamic (Tabular) — direct closed form:
         $("#copyStatus").textContent = "Link copied.";
         setTimeout(() => { $("#copyStatus").textContent = ""; }, 2500);
       });
+    });
+    $("#posterBtn").addEventListener("click", () => {
+      if (lastCtx) generatePoster(lastCtx);
     });
     dateInput.addEventListener("change", updateAll);
     timeInput.addEventListener("change", updateAll);
@@ -333,6 +549,7 @@ Islamic (Tabular) — direct closed form:
 
     initTheme();
     initNavScrollSpy();
+    initSourceSelector();
     initConverterButtons();
     renderTableFilters();
     renderEncycloFilters();

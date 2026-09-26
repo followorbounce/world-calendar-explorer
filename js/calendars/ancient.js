@@ -288,8 +288,22 @@ const CalAncient = (() => {
     return { calendar: "Astronomical Year Numbering", year: isBCE ? 1 - gregorianYear : gregorianYear };
   }
 
+  function copticToJDN(year, month, day) {
+    return copticYearStartJDN(year) + (month - 1) * 30 + (day - 1);
+  }
+
+  function ethiopianToJDN(year, month, day) {
+    return ETHIOPIAN_EPOCH_JDN + (year - 1) * 365 + floordiv(year - 1, 4) + (month - 1) * 30 + (day - 1);
+  }
+
+  function frenchRepToJDN(year, month, day) {
+    return frRepYearStartJDN(year) + (month - 1) * 30 + (day - 1);
+  }
+
   return {
     byzantine, coptic, ethiopian, armenian, assyrian, egyptianCivil,
     olympiad, seleucid, frenchRepublican, discordian, holocene, astronomicalYear,
+    copticToJDN, ethiopianToJDN, frenchRepToJDN,
+    COPTIC_MONTHS, ETHIOPIAN_MONTHS, FR_REP_MONTHS,
   };
 })();

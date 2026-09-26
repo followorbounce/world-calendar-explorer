@@ -539,6 +539,61 @@ footer a { color: var(--brass); }
 .small { font-size: 0.78rem; color: var(--ink-dim); }
 a { color: var(--accent-2); }
 
+/* ---------- Source calendar selector ---------- */
+.converter-input select {
+  width: 100%;
+  background: var(--paper-alt);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--ink);
+  padding: 9px 10px;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.source-fields {
+  display: grid;
+  gap: 8px;
+}
+.source-fields .field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.source-fields .field-group label {
+  margin: 0;
+}
+.source-fields input[type="number"],
+.source-fields select {
+  width: 100%;
+  background: var(--paper-alt);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--ink);
+  padding: 9px 10px;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+}
+.source-fields input[type="number"] {
+  -moz-appearance: textfield;
+}
+.source-fields input[type="number"]::-webkit-outer-spin-button,
+.source-fields input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* ---------- Maya links ---------- */
+.maya-link {
+  color: var(--accent-2);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--accent-2);
+}
+.maya-link:hover {
+  border-bottom-style: solid;
+}
+
 @media (max-width: 640px) {
   .topbar-inner { flex-wrap: wrap; }
   section { padding-top: 40px; }
