@@ -468,14 +468,14 @@ Islamic (Tabular) — direct closed form:
 
   /* ---------- theme + nav ---------- */
   function initTheme() {
-    const saved = localStorage.getItem("wce-theme");
+    const saved = localStorage.getItem("fb-theme") || localStorage.getItem("wce-theme");
     if (saved) document.documentElement.setAttribute("data-theme", saved);
     $("#themeToggle").addEventListener("click", () => {
       const current = document.documentElement.getAttribute("data-theme") ||
         (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
       const next = current === "dark" ? "light" : "dark";
       document.documentElement.setAttribute("data-theme", next);
-      try { localStorage.setItem("wce-theme", next); } catch (e) { /* ignore */ }
+      try { localStorage.setItem("fb-theme", next); } catch (e) { /* ignore */ }
     });
   }
 

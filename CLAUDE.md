@@ -77,8 +77,20 @@ table labels). All from Google Fonts.
   astronomy diagram sliders, comparison-engine table, era/epoch explorer,
   math lab (renders the actual JDN arithmetic for the selected date, plus
   a couple of worked non-trivial conversions), theme toggle (persisted to
-  `localStorage`), scroll-spy nav, poster export (Canvas API → PNG
-  download), and Maya result links to the sibling Maya-Calendar site.
+  `localStorage` key `fb-theme`, shared across all followorbounce sites),
+  scroll-spy nav, poster export (Canvas API → PNG download), and Maya
+  result links to the sibling Maya-Calendar site.
+- `timezones.html` — **World Timezone Map** (P2). Self-contained page
+  (links to shared `style.css` for design tokens, all JS inline). SVG
+  equirectangular world map with simplified continent outlines, 27 timezone
+  bands, real-time day/night terminator (solar declination formula),
+  60+ city dots with labels. Five sections: interactive map, 24-hour time
+  ruler (all UTC offsets with fractional), live world clocks grid (updates
+  every second via `Intl` API — handles DST automatically), 10 special-zone
+  explainer cards (India, Nepal, Iran, China, Chatham, Kiribati, Australia,
+  Spain, IDL, Russia), and a "How Timezones Work" educational section.
+  Theme toggle unified with `fb-theme` localStorage key. Cross-linked
+  from `index.html` nav bar.
 
 ## Sourcing & verification
 Every non-trivial algorithm was either (a) independently re-derived and
@@ -120,9 +132,10 @@ specific checks run for each system.
 The brief asked for as much as possible; these were the highest-effort,
 lowest-certainty items, cut to keep everything actually shipped accurate
 and real rather than padding out fake precision:
-- **Human Timekeeping Map** (interactive world map of regional calendar
-  adoption/use) — a genuinely separate feature (SVG world map + a real
-  region-to-calendar geographic dataset), not started.
+- ~~**Human Timekeeping Map**~~ — **DONE** as `timezones.html`: interactive
+  SVG world timezone map with continent outlines, timezone bands, day/night
+  terminator, 60+ city markers with live clocks, 24-hour time ruler, 10
+  special-zone explainers, and a "How Timezones Work" educational section.
 - **Calendar relationship graph** — not started.
 - **Literal rotating zodiac wheel widget** — the Chinese Zodiac is fully
   computed and displayed, but not as an animated wheel; the astronomy

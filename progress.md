@@ -90,11 +90,21 @@ screenshotted and reviewed in both before calling it done.
 
 - **2026-09-19 (same day) — Pushed and deployed.** `git init` + `gh repo create` (private first, then made public + Pages enabled on user confirmation, since Pages needs a public repo on this GitHub plan — same constraint hit with the `tarot` repo). Added the Cloudflare Web Analytics beacon (shares the `followorbounce.github.io` site/token). Live at https://followorbounce.github.io/world-calendar-explorer/, confirmed via `gh api .../pages/builds/latest` + a direct fetch showing the analytics beacon present.
 
+- **2026-09-26 — World Timezone Map page** (`timezones.html`).
+  Self-contained second page with interactive SVG world map (simplified
+  continent outlines, timezone bands, real-time day/night terminator),
+  60+ cities with live clocks (Intl API, handles DST), 24-hour time ruler,
+  10 special-zone explainer cards, and educational section. Theme toggle
+  unified: both pages now use `fb-theme` localStorage key (shared with
+  all followorbounce.github.io sites) instead of the old `wce-theme` key.
+  Cross-linked from index.html navigation bar. Passed structure validation
+  (balanced braces/parens/brackets/tags); headless Firefox screenshot
+  not possible in this environment (known sandbox limitation) but page
+  served 200 with no JS errors in Firefox output.
+
 ## Next steps
-- The "Deliberately not built this pass" list in CLAUDE.md is long — say
-  which one (if any) to tackle next. The world map and the true Chinese
-  lunisolar calendar are the two biggest remaining lifts.
-- Images/assets are zero — this is pure HTML/CSS/JS/SVG, no downloaded
-  media, so no size concerns like the tarot site had.
-- No offline/PWA packaging yet (the sibling Maya-Calendar site has a
-  service worker + manifest pattern that could be reused here).
+- The "Deliberately not built this pass" list in CLAUDE.md is shorter now
+  (world map is done). The true Chinese lunisolar calendar is the biggest
+  remaining lift.
+- Images/assets are still zero — pure HTML/CSS/JS/SVG.
+- No offline/PWA packaging yet.
