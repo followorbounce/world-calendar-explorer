@@ -101,8 +101,8 @@ const EncyclopediaData = {
     religious: "Historically tied to Zoroastrian tradition (month names, Nowruz as a major festival), though today used as a secular civil calendar in Iran.",
     astronomical: "Solar and, in its official form, tied directly to the true astronomical vernal equinox as observed from Iran, not to an arithmetic leap rule.",
     epoch: "19 March 622 CE (Julian), aligned with the Hijra year.",
-    leap: "This site implements Birashk's 2820-year arithmetic approximation (leap years recur mostly every 4 years with an occasional 5-year gap) rather than computing the true equinox — a well-documented simplification of the calendar's real definition, accurate for roughly 1925-2090 CE.",
-    method: "Verified against the real 2025 Nowruz date (20 March) before use.",
+    leap: "Leap years recur mostly every 4 years with an occasional 5-year gap. This site uses Kazimierz Borkowski's break-year/33-year-cycle arithmetic (1996), which reproduces the equinox-based official calendar for AP -61 to 3177. The older Birashk 2820-year cycle, used here before October 2026, is not accurate for modern dates: it makes 1403 a common year and dates Nowruz 1404 to 20 March 2025, a day early.",
+    method: "Verified against official Nowruz dates: 1 Farvardin 1403 = 20 March 2024, 1404 = 21 March 2025, 1405 = 21 March 2026.",
   },
   indian: {
     history: "Recommended by India's Calendar Reform Committee and adopted for official government use in 1957, built on the ancient Saka Era (epoch 78 CE).",
@@ -153,10 +153,10 @@ const EncyclopediaData = {
     history: "Established by the Báb in the mid-19th century and later confirmed by Bahá'u'lláh; a 2015 decision by the Universal House of Justice moved official Naw-Rúz determination from a fixed Gregorian-date approximation to the true astronomical equinox.",
     use: "The religious calendar of the Bahá'í Faith worldwide, used for its nine holy days and 19-day 'Feast' gatherings.",
     religious: "Entirely religious in purpose and structure.",
-    astronomical: "Solar — Naw-Rúz (New Year) is defined as the day containing the true March equinox as observed from Tehran.",
+    astronomical: "Solar — Naw-Rúz (New Year) is the day on which the March equinox occurs before sunset in Tehran (the Bahá'í day begins at sunset).",
     epoch: "1844 CE (the year of the Báb's declaration).",
     leap: "19 months of 19 days (361 days) plus intercalary Ayyám-i-Há days (4 in a common year, 5 in a leap year) bringing the total to 365 or 366.",
-    method: "This site computes the equinox instant with Meeus's low-precision mean-equinox formula (no periodic correction terms) — correct on the right day in the large majority of years, but can be off by a day when the true equinox falls very close to midnight in Tehran. The Kull-i-Shay'/Váhid numbering follows the calendar's straightforward 19×19-year structure; cross-check the traditional Váhid name against a Bahá'í almanac if precision matters to you.",
+    method: "This site computes the equinox instant with Meeus's algorithm (mean equinox plus the 24 periodic terms, about 1-minute accuracy) and compares it with computed Tehran sunset: an equinox after sunset moves Naw-Rúz to the next day. Before 2015 it uses the fixed 21 March date. Years where the equinox and sunset fall within minutes of each other (2026 is one) are borderline and should be checked against the Bahá'í World Centre's published dates. The Kull-i-Shay'/Váhid numbering follows the calendar's straightforward 19×19-year structure; cross-check the traditional Váhid name against a Bahá'í almanac if precision matters to you.",
   },
   byzantine: {
     history: "The 'Creation Era of Constantinople' was the official calendar of the Byzantine Empire from the 7th century until its fall in 1453, and continued in Russian Orthodox use into the 18th century.",
@@ -236,7 +236,7 @@ const EncyclopediaData = {
     religious: "Explicitly anti-clerical in intent — one of its goals was de-Christianizing the French calendar.",
     astronomical: "Originally defined by the true autumn equinox observed at Paris, not a fixed arithmetic rule — the calendar was abolished before a long-term leap-year policy was ever actually exercised in practice.",
     epoch: "22 September 1792 (Gregorian), the day the French First Republic was proclaimed.",
-    leap: "The 'Romme rule' proposed (but never implemented contemporaneously) a Gregorian-like leap pattern; this site uses that algorithmic continuation for dates past 1805, since it's the convention most calendar-conversion software adopts.",
+    leap: "The 'Romme rule' proposed (but never implemented contemporaneously) a Gregorian-like leap pattern; this site uses the historically observed sextile (leap) years III, VII and XI for Ans I–XIV (1792–1805) and that Romme-rule algorithmic continuation from An XV onward, the convention most calendar-conversion software adopts for later dates.",
     method: "12 months of 30 days plus 5-6 complementary Sansculottides days.",
   },
   discordian: {

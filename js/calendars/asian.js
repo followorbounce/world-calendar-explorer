@@ -75,24 +75,21 @@ const CalAsian = (() => {
   }
 
   /* ---------- Persian / Iranian Solar Hijri Calendar ----------
-     Birashk's 2820-year arithmetic approximation of the true
-     astronomical calendar (algorithm from John Walker's Fourmilab
-     Calendar Converter, public domain — a direct implementation of
-     Dershowitz & Reingold). Verified against the real 2025 Nowruz
-     date (20 March) before use. The true official Iranian calendar
-     is defined by the actual astronomical equinox at Tehran, not
-     arithmetic — this approximation is known to match it closely
-     for roughly 1925-2090 CE and can drift outside that window. */
+     Two arithmetic models of the officially astronomical (Tehran
+     equinox) calendar: Borkowski's break-year algorithm (primary, see
+     below) and Birashk's 2820-year cycle (algorithm from John Walker's
+     Fourmilab Calendar Converter / Dershowitz & Reingold), now used
+     only as a fallback outside Borkowski's validity range. */
   const PERSIAN_EPOCH = 1948321; // 19 March 622 CE (Julian)
   const PERSIAN_MONTHS = [
     "Farvardin", "Ordibehesht", "Khordad", "Tir", "Mordad", "Shahrivar",
     "Mehr", "Aban", "Azar", "Dey", "Bahman", "Esfand",
   ];
-  function leapPersian(year) {
+  function leapPersianBirashk(year) {
     const y = year > 0 ? year - 474 : year - 473;
     return mod((mod(y, 2820) + 474 + 38) * 682, 2816) < 682;
   }
-  function persianToJDN(year, month, day) {
+  function persianToJDNBirashk(year, month, day) {
     const epbase = year - (year >= 0 ? 474 : 473);
     const epyear = 474 + mod(epbase, 2820);
     return (
@@ -104,8 +101,8 @@ const CalAsian = (() => {
       (PERSIAN_EPOCH - 1)
     );
   }
-  function jdnToPersian(jd) {
-    const depoch = jd - persianToJDN(475, 1, 1);
+  function jdnToPersianBirashk(jd) {
+    const depoch = jd - persianToJDNBirashk(475, 1, 1);
     const cycle = floordiv(depoch, 1029983);
     const cyear = mod(depoch, 1029983);
     let ycycle;
@@ -118,10 +115,74 @@ const CalAsian = (() => {
     }
     let year = ycycle + 2820 * cycle + 474;
     if (year <= 0) year -= 1;
-    const yday = jd - persianToJDN(year, 1, 1) + 1;
+    const yday = jd - persianToJDNBirashk(year, 1, 1) + 1;
     const month = yday <= 186 ? Math.ceil(yday / 31) : Math.ceil((yday - 6) / 30);
-    const day = jd - persianToJDN(year, month, 1) + 1;
+    const day = jd - persianToJDNBirashk(year, month, 1) + 1;
     return { year, month, day };
+  }
+
+  /* Primary algorithm (added 2026-10-02): Kazimierz Borkowski's
+     break-year / 33-year-cycle arithmetic ("Astronomical Algorithms for
+     the Iranian Calendar", 1996; the algorithm behind the widely used
+     jalaali-js library). It reproduces the official equinox-based
+     calendar for AP -61 to 3177. Birashk's 2820-year cycle above is
+     kept only as a fallback outside that range: it is NOT accurate
+     for modern dates — it makes 1403 a common year and puts
+     1 Farvardin 1404 on 20 March 2025, but the official (astronomical)
+     calendar has 1403 as a leap year and Nowruz 1404 on 21 March 2025. */
+  const JALAALI_BREAKS = [-61, 9, 38, 199, 426, 686, 756, 818, 1111, 1181, 1210,
+    1635, 2060, 2097, 2192, 2262, 2324, 2394, 2456, 3178];
+  const tdiv = (a, b) => Math.trunc(a / b);
+  const tmod = (a, b) => a - Math.trunc(a / b) * b;
+  function jalaaliInRange(jy) {
+    return jy >= JALAALI_BREAKS[0] && jy < JALAALI_BREAKS[JALAALI_BREAKS.length - 1];
+  }
+  // Returns { leap: years since last leap year (0 = this year is leap),
+  //           gy: Gregorian year of 1 Farvardin, march: March day of 1 Farvardin }
+  function jalCal(jy) {
+    const gy = jy + 621;
+    let leapJ = -14;
+    let jp = JALAALI_BREAKS[0];
+    let jump = 0;
+    for (let i = 1; i < JALAALI_BREAKS.length; i++) {
+      const jm = JALAALI_BREAKS[i];
+      jump = jm - jp;
+      if (jy < jm) break;
+      leapJ += tdiv(jump, 33) * 8 + tdiv(tmod(jump, 33), 4);
+      jp = jm;
+    }
+    let n = jy - jp;
+    leapJ += tdiv(n, 33) * 8 + tdiv(tmod(n, 33) + 3, 4);
+    if (tmod(jump, 33) === 4 && jump - n === 4) leapJ += 1;
+    const leapG = tdiv(gy, 4) - tdiv((tdiv(gy, 100) + 1) * 3, 4) - 150;
+    const march = 20 + leapJ - leapG;
+    if (jump - n < 6) n = n - jump + tdiv(jump + 4, 33) * 33;
+    let leap = tmod(tmod(n + 1, 33) - 1, 4);
+    if (leap === -1) leap = 4;
+    return { leap, gy, march };
+  }
+  function leapPersian(year) {
+    return jalaaliInRange(year) ? jalCal(year).leap === 0 : leapPersianBirashk(year);
+  }
+  function persianToJDN(year, month, day) {
+    if (!jalaaliInRange(year)) return persianToJDNBirashk(year, month, day);
+    const r = jalCal(year);
+    return Core.gregorianToJDN(r.gy, 3, r.march) + (month - 1) * 31 - tdiv(month, 7) * (month - 7) + day - 1;
+  }
+  function jdnToPersian(jd) {
+    let year = jdnToGregorian(jd).y - 621;
+    if (!jalaaliInRange(year) || !jalaaliInRange(year - 1)) return jdnToPersianBirashk(jd);
+    const r = jalCal(year);
+    let k = jd - Core.gregorianToJDN(r.gy, 3, r.march);
+    if (k >= 0) {
+      if (k <= 185) return { year, month: 1 + floordiv(k, 31), day: mod(k, 31) + 1 };
+      k -= 186;
+    } else {
+      year -= 1;
+      k += 179;
+      if (r.leap === 1) k += 1;
+    }
+    return { year, month: 7 + floordiv(k, 30), day: mod(k, 30) + 1 };
   }
   function persianSolarHijri(jdn) {
     const p = jdnToPersian(jdn);
@@ -132,7 +193,7 @@ const CalAsian = (() => {
       monthName: PERSIAN_MONTHS[p.month - 1],
       day: p.day,
       era: "AP (Anno Persico)",
-      note: "Arithmetic (2820-year cycle) approximation of the astronomically-defined official calendar; matches the true equinox-based calendar closely c. 1925-2090 CE.",
+      note: "Arithmetic (Borkowski 33-year break-year) reproduction of the astronomically-defined official calendar, valid AP -61 to 3177; the true calendar is set by the equinox at Tehran.",
     };
   }
 

@@ -124,18 +124,85 @@ const CalAbrahamic = (() => {
   }
 
   /* ================= BAHÁ'Í (BADÍ) ================= */
-  // Post-2015 rule: Naw-Rúz = the Tehran calendar day containing the
-  // true March equinox. Equinox instant from Meeus's low-precision
-  // mean-equinox polynomial (Astronomical Algorithms, valid 1000-3000
-  // CE; mean error on the order of minutes without the omitted
-  // periodic correction terms — negligible for picking a calendar day
-  // except in the rare case the equinox falls within about an hour of
-  // local midnight in Tehran).
+  // Naw-Rúz rule (Universal House of Justice, in force from 172 BE /
+  // 2015 CE): Naw-Rúz is the day on which the March equinox occurs
+  // *before sunset* in Tehran (the Bahá'í day starts at sunset), so an
+  // equinox after Tehran sunset moves Naw-Rúz to the next civil day.
+  // Before 2015 the calendar as used in the West fixed Naw-Rúz at
+  // 21 March, which this function returns for earlier years.
+  //
+  // Fixed 2026-10-02: the previous version used Meeus's *mean*
+  // equinox polynomial with no periodic terms and took the Tehran
+  // civil (midnight-to-midnight) day containing it, ignoring the
+  // sunset rule. That put Naw-Rúz on 20 March in 2018, 2022 and 2027,
+  // where the equinox falls after Tehran sunset and the published
+  // Naw-Rúz is 21 March.
+  //
+  // Equinox: Meeus, Astronomical Algorithms ch. 27 (mean JDE0 + the
+  // 24 periodic terms of table 27.C; quoted accuracy about 1 minute for
+  // 1951-2050), converted TT -> UT with an Espenak-Meeus delta-T
+  // polynomial. Sunset: NOAA solar-position formulae, standard -0.833°
+  // altitude, Tehran 35.6892°N 51.3890°E. Years where the two instants
+  // fall within a few minutes of each other (2026 is one: both about
+  // 18:16 IRST) cannot be decided this way with certainty — check them
+  // against the Bahá'í World Centre's published dates.
+  const EQUINOX_TERMS = [
+    [485, 324.96, 1934.136], [203, 337.23, 32964.467], [199, 342.08, 20.186],
+    [182, 27.85, 445267.112], [156, 73.14, 45036.886], [136, 171.52, 22518.443],
+    [77, 222.54, 65928.934], [74, 296.72, 3034.906], [70, 243.58, 9037.513],
+    [58, 119.81, 33718.147], [52, 297.17, 150.678], [50, 21.02, 2281.226],
+    [45, 247.54, 29929.562], [44, 325.15, 31555.956], [29, 60.93, 4443.417],
+    [18, 155.12, 67555.328], [17, 288.79, 4562.452], [16, 198.04, 62894.029],
+    [14, 199.76, 31436.921], [12, 95.39, 14577.848], [12, 287.11, 31931.756],
+    [12, 320.81, 34777.259], [9, 227.73, 1222.114], [8, 15.45, 16859.074],
+  ];
+  const RAD = Math.PI / 180;
+  function marchEquinoxJDE(year) {
+    const Y = (year - 2000) / 1000;
+    const jde0 = 2451623.80984 + 365242.37404 * Y + 0.05169 * Y ** 2 - 0.00411 * Y ** 3 - 0.00057 * Y ** 4;
+    const T = (jde0 - 2451545) / 36525;
+    const W = (35999.373 * T - 2.47) * RAD;
+    const dLambda = 1 + 0.0334 * Math.cos(W) + 0.0007 * Math.cos(2 * W);
+    let S = 0;
+    for (const [A, B, C] of EQUINOX_TERMS) S += A * Math.cos((B + C * T) * RAD);
+    return jde0 + (0.00001 * S) / dLambda;
+  }
+  function deltaTSeconds(year) {
+    const t = year - 2000;
+    if (year >= 2005 && year <= 2050) return 62.92 + 0.32217 * t + 0.005589 * t * t;
+    const u = (year - 1820) / 100;
+    return -20 + 32 * u * u; // long-term parabola (Morrison & Stephenson)
+  }
+  // JD (UT) of sunset on the civil date whose noon is JDN `jdn`.
+  function sunsetJD(jdn, latDeg, lonDeg) {
+    let jd = jdn + 0.25 - lonDeg / 360;
+    for (let i = 0; i < 3; i++) {
+      const T = (jd - 2451545) / 36525;
+      const L0 = (280.46646 + T * (36000.76983 + 0.0003032 * T)) % 360;
+      const M = 357.52911 + T * (35999.05029 - 0.0001537 * T);
+      const e = 0.016708634 - T * (0.000042037 + 0.0000001267 * T);
+      const C = Math.sin(M * RAD) * (1.914602 - T * (0.004817 + 0.000014 * T)) +
+        Math.sin(2 * M * RAD) * (0.019993 - 0.000101 * T) + Math.sin(3 * M * RAD) * 0.000289;
+      const omega = 125.04 - 1934.136 * T;
+      const lambda = L0 + C - 0.00569 - 0.00478 * Math.sin(omega * RAD);
+      const eps0 = 23 + (26 + (21.448 - T * (46.815 + T * (0.00059 - T * 0.001813))) / 60) / 60;
+      const eps = eps0 + 0.00256 * Math.cos(omega * RAD);
+      const dec = Math.asin(Math.sin(eps * RAD) * Math.sin(lambda * RAD));
+      const yv = Math.tan((eps / 2) * RAD) ** 2;
+      const eqTimeMin = (4 / RAD) * (yv * Math.sin(2 * L0 * RAD) - 2 * e * Math.sin(M * RAD) +
+        4 * e * yv * Math.sin(M * RAD) * Math.cos(2 * L0 * RAD) -
+        0.5 * yv * yv * Math.sin(4 * L0 * RAD) - 1.25 * e * e * Math.sin(2 * M * RAD));
+      const ha = Math.acos(Math.cos(90.833 * RAD) / (Math.cos(latDeg * RAD) * Math.cos(dec)) -
+        Math.tan(latDeg * RAD) * Math.tan(dec)) / RAD;
+      jd = jdn - 0.5 + (720 - 4 * lonDeg - eqTimeMin + 4 * ha) / 1440;
+    }
+    return jd;
+  }
   function tehranEquinoxJDN(gregorianYear) {
-    const Y = (gregorianYear - 2000) / 1000;
-    const JDE0 = 2451623.80984 + 365242.37404 * Y + 0.05169 * Y ** 2 - 0.00411 * Y ** 3 - 0.00057 * Y ** 4;
-    const tehranJD = JDE0 + 3.5 / 24; // Iran Standard Time, UTC+3:30
-    return Math.floor(tehranJD + 0.5);
+    if (gregorianYear < 2015) return Core.gregorianToJDN(gregorianYear, 3, 21);
+    const eqUT = marchEquinoxJDE(gregorianYear) - deltaTSeconds(gregorianYear) / 86400;
+    const civilDay = Math.floor(eqUT + 3.5 / 24 + 0.5); // Tehran civil date (UTC+3:30)
+    return eqUT < sunsetJD(civilDay, 35.6892, 51.389) ? civilDay : civilDay + 1;
   }
   const BAHAI_MONTH_NAMES = [
     "Bahá", "Jalál", "Jamál", "ʻAẓamat", "Núr", "Raḥmat", "Kalimát",
@@ -176,7 +243,7 @@ const CalAbrahamic = (() => {
       vahid,
       yearInVahid,
       era: "BE (Badíʻ Era)",
-      note: "Naw-Rúz date uses a low-precision astronomical approximation (Meeus mean equinox, no periodic correction terms) — accurate to the correct day in the vast majority of years, but can be a day off when the true equinox falls very close to midnight in Tehran. Kull-i-Shay'/Váhid numbering follows the straightforward 19×19-year structural definition; cross-check against a Bahá'í almanac for the traditional Váhid name.",
+      note: "Naw-Rúz computed from the March equinox (Meeus, with periodic terms) and Tehran sunset, per the post-2015 rule; fixed 21 March before 2015. Years where the equinox falls within minutes of Tehran sunset (e.g. 2026) are borderline — check against the Bahá'í World Centre's published dates. Kull-i-Shay'/Váhid numbering follows the straightforward 19×19-year structural definition; cross-check against a Bahá'í almanac for the traditional Váhid name.",
     };
   }
   function jdnToGregYear(jdn) {

@@ -56,8 +56,12 @@ const CalAncient = (() => {
   function copticYearLength(y) {
     return copticIsLeap(y) ? 366 : 365;
   }
+  // Leap years (y mod 4 == 3) strictly before year y number floor(y/4)
+  // (Dershowitz & Reingold, fixed-from-coptic). Fixed 2026-10-02: was
+  // floor((y-1)/4), which put 1 Thout one day early in every year
+  // divisible by 4 (e.g. Coptic 1740 / Ethiopian 2016 = 12 Sep 2023).
   function copticYearStartJDN(y) {
-    return COPTIC_EPOCH_JDN + (y - 1) * 365 + floordiv(y - 1, 4);
+    return COPTIC_EPOCH_JDN + (y - 1) * 365 + floordiv(y, 4);
   }
 
   /* ---------- Ethiopian Calendar ----------
@@ -71,18 +75,17 @@ const CalAncient = (() => {
     "Miazia", "Ginbot", "Sene", "Hamle", "Nehase", "Pagume",
   ];
   function ethiopian(jdn) {
-    const c = coptic(jdn - (COPTIC_EPOCH_JDN - ETHIOPIAN_EPOCH_JDN) * 0); // placeholder not used
     // Reuse Coptic's year-search logic with the Ethiopian epoch instead.
     const daysSinceEpoch = jdn - ETHIOPIAN_EPOCH_JDN;
     let y = Math.max(1, floordiv(daysSinceEpoch, 365.25));
-    let yearStart = ETHIOPIAN_EPOCH_JDN + (y - 1) * 365 + floordiv(y - 1, 4);
+    let yearStart = ETHIOPIAN_EPOCH_JDN + (y - 1) * 365 + floordiv(y, 4);
     while (jdn - yearStart >= (copticIsLeap(y) ? 366 : 365)) {
       y += 1;
-      yearStart = ETHIOPIAN_EPOCH_JDN + (y - 1) * 365 + floordiv(y - 1, 4);
+      yearStart = ETHIOPIAN_EPOCH_JDN + (y - 1) * 365 + floordiv(y, 4);
     }
     while (jdn < yearStart) {
       y -= 1;
-      yearStart = ETHIOPIAN_EPOCH_JDN + (y - 1) * 365 + floordiv(y - 1, 4);
+      yearStart = ETHIOPIAN_EPOCH_JDN + (y - 1) * 365 + floordiv(y, 4);
     }
     const dayOfYear = jdn - yearStart;
     const month = floordiv(dayOfYear, 30) + 1;
@@ -205,6 +208,13 @@ const CalAncient = (() => {
     "Germinal", "Floréal", "Prairial", "Messidor", "Thermidor", "Fructidor", "Sansculottides",
   ];
   function frenchRepublicanIsLeap(y) {
+    // Years I-XIV (1792-1805, the period the calendar was actually in
+    // force) use the historically observed sextile years III, VII and XI,
+    // which were set by the autumn equinox. The Romme rule also gives
+    // exactly three leap years in I-XIV (IV, VIII, XII), so every date
+    // from An XV onward is unchanged by this. Fixed 2026-10-02: the pure
+    // Romme rule mis-dated e.g. 18 Brumaire VIII (= 9 Nov 1799) by a day.
+    if (y >= 1 && y <= 14) return y === 3 || y === 7 || y === 11;
     if (mod(y, 400) === 0) return true;
     if (mod(y, 100) === 0) return false;
     return mod(y, 4) === 0;
@@ -293,7 +303,7 @@ const CalAncient = (() => {
   }
 
   function ethiopianToJDN(year, month, day) {
-    return ETHIOPIAN_EPOCH_JDN + (year - 1) * 365 + floordiv(year - 1, 4) + (month - 1) * 30 + (day - 1);
+    return ETHIOPIAN_EPOCH_JDN + (year - 1) * 365 + floordiv(year, 4) + (month - 1) * 30 + (day - 1);
   }
 
   function frenchRepToJDN(year, month, day) {

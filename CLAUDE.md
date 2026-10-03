@@ -40,12 +40,13 @@ table labels). All from Google Fonts.
   Hebrew and Islamic algorithms transcribed from John Walker's Fourmilab
   Calendar Converter (public domain, a direct implementation of
   Dershowitz & Reingold's *Calendrical Calculations*) — see "Sourcing &
-  verification" below. Bahá'í Naw-Rúz uses Meeus's low-precision
-  mean-equinox formula (see caveat in its encyclopedia entry).
+  verification" below. Bahá'í Naw-Rúz uses Meeus's equinox (with periodic
+  terms) vs. computed Tehran sunset (see caveat in its encyclopedia entry).
 - `js/calendars/asian.js` — Chinese Zodiac + Sexagenary Cycle (see
   approximation caveat below), Japanese Imperial Eras (5 most recent,
   exact proclaimed dates), Buddhist Era (Thai), Persian Solar Hijri
-  (Fourmilab/D&R algorithm, verified against 2025 Nowruz), Indian National
+  (Borkowski break-year algorithm, Birashk 2820-cycle only as an
+  out-of-range fallback; verified against Nowruz 2024/2025/2026), Indian National
   Calendar / Saka Era (Fourmilab/D&R algorithm, verified against 2025
   Chaitra 1), Vikram Samvat (year-offset only, explicitly flagged as
   incomplete — see below).
@@ -107,13 +108,13 @@ specific checks run for each system.
 - **Chinese Zodiac/Sexagenary Cycle**: year boundary approximated at 4
   February instead of the true lunisolar Chinese New Year (can be off by
   a few weeks in Jan/early Feb of some years).
-- **Persian (Solar Hijri)**: uses Birashk's 2820-year arithmetic
-  approximation of the true astronomically-defined official calendar;
-  accurate roughly 1925-2090 CE, can diverge outside that window.
-- **Bahá'í Naw-Rúz**: low-precision astronomical approximation (Meeus mean
-  equinox, no periodic correction terms) — correct on the right day in the
-  large majority of years, can be off by a day when the true equinox falls
-  very close to midnight in Tehran. Kull-i-Shay'/Váhid numbering follows
+- **Persian (Solar Hijri)**: Borkowski's arithmetic reproduction of the
+  equinox-based official calendar, valid AP -61..3177 (Birashk's 2820-year
+  cycle outside that range). Birashk alone was wrong for 2025 — see
+  progress.md 2026-10-02.
+- **Bahá'í Naw-Rúz**: equinox (Meeus ch. 27, ~1 min) compared with computed
+  Tehran sunset (NOAA formulae); fixed 21 March before 2015. Years where
+  the two fall within minutes (2026: both ~18:16 IRST) are borderline. Kull-i-Shay'/Váhid numbering follows
   the calendar's straightforward structural definition but wasn't
   cross-verified against a Bahá'í almanac.
 - **Vikram Samvat**: year-offset only (+56/+57, Chaitradi convention) —

@@ -44,6 +44,9 @@ being transcribed into `js/`, specifically:
 - Persian: Nowruz 1404 AP = 20 March 2025 ✓ (matches the real 2025
   astronomical equinox date, not just the arithmetic approximation's own
   self-consistency).
+  **CORRECTED 2026-10-02: this check used the wrong reference. Official
+  Nowruz 1404 was 21 March 2025 (equinox 12:31 IRST, after noon); Birashk
+  gave 20 March. Algorithm replaced — see 2026-10-02 entry.**
 - Indian National Calendar: Chaitra 1, Saka 1947 = 22 March 2025 ✓, with
   the day-before check landing correctly in the prior Saka year.
 - Bahá'í: independently implemented the Naw-Rúz/Ayyám-i-Há logic (this
@@ -103,6 +106,25 @@ screenshotted and reviewed in both before calling it done.
   served 200 with no JS errors in Firefox output.
 
 ## Next steps
+- **2026-10-02 — Science/maths review: 4 conversion defects fixed** (node
+  harness loading js/*.js in a vm context; round-trip + day-continuity
+  sweep 1781-2219 CE all 0 failures after fixes).
+  - Coptic/Ethiopian: year start used floor((y-1)/4) instead of D&R's
+    floor(y/4) → 1 Thout/1 Meskerem one day early in every year divisible
+    by 4 (Ethiopian 2016 / Coptic 1740 gave 11 Sep 2023, real 12 Sep; day
+    "1" was skipped after Pagume 6). Fixed in `ancient.js` (3 places).
+  - French Republican: pure Romme rule mis-dated An IV-XIV (18 Brumaire
+    VIII came out 10 Nov 1799). Now uses historical sextiles III/VII/XI for
+    Ans I-XIV; identical to Romme from An XV on.
+  - Persian: Birashk 2820-cycle put Nowruz 1404 on 20 Mar 2025 (official:
+    21 Mar). Replaced with Borkowski break-year algorithm (valid AP -61..3177,
+    Birashk kept as fallback). Checked 1300, 1304, 1354, 1375, 1399-1407.
+  - Bahá'í: Naw-Rúz now = day the equinox (Meeus ch.27 with periodic terms,
+    ΔT-corrected) falls before Tehran sunset; fixed 21 Mar before 2015.
+    Old code gave 20 Mar for 2018/2022/2027 (published: 21 Mar). 2026 is
+    borderline (equinox and sunset both ~18:16 IRST) — check bahai.org.
+  - Encyclopedia entries + CLAUDE.md approximations list updated to match.
+
 - The "Deliberately not built this pass" list in CLAUDE.md is shorter now
   (world map is done). The true Chinese lunisolar calendar is the biggest
   remaining lift.
