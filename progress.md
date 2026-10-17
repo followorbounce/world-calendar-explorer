@@ -130,3 +130,6 @@ screenshotted and reviewed in both before calling it done.
   remaining lift.
 - Images/assets are still zero — pure HTML/CSS/JS/SVG.
 - No offline/PWA packaging yet.
+
+## 2026-10-16 — Index infrastructure
+- added missing canonical URL, description where absent, Open Graph and twitter:card tags. The host-level robots.txt / sitemap index / llms.txt live in followorbounce.github.io.
