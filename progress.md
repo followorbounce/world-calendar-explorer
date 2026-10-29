@@ -133,3 +133,6 @@ screenshotted and reviewed in both before calling it done.
 
 ## 2026-10-16 — Index infrastructure
 - added missing canonical URL, description where absent, Open Graph and twitter:card tags. The host-level robots.txt / sitemap index / llms.txt live in followorbounce.github.io.
+
+## 2026-10-28 — Today in every calendar + 13-month page
+New `today.html` (29 systems, daily static rebuild via workflow) and `thirteen-months.html` (IFC + 13 Moon, verified on 4,383 dates). History checked against Wikipedia (IFC, Cotsworth, Positivist calendar), UBC Cotsworth fonds, Bloomberg 2014, Sapiens.

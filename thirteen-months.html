@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>13 Months of 28 Days: the International Fixed Calendar, Today · World Calendar Explorer</title>
+<meta name="description" content="How a 13-month, 28-day calendar works, what today's date is in it, how it meets the week, the Moon and other calendars, and the honest case for and against it.">
+<link rel="canonical" href="https://followorbounce.github.io/world-calendar-explorer/thirteen-months">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="World Calendar Explorer">
+<meta property="og:title" content="13 Months of 28 Days: the International Fixed Calendar">
+<meta property="og:url" content="https://followorbounce.github.io/world-calendar-explorer/thirteen-months">
+<meta property="og:description" content="How a 13-month, 28-day calendar works, what today's date is in it, how it meets the week, the Moon and other calendars, and the honest case for and against it.">
+<meta property="og:image" content="https://followorbounce.github.io/world-calendar-explorer/og/thirteen-months.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="13 Months of 28 Days: the International Fixed Calendar — World Calendar Explorer">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://followorbounce.github.io/world-calendar-explorer/og/thirteen-months.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&family=Spectral:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script>
+(function(){
+  try {
+    var s = localStorage.getItem('fb-theme') || localStorage.getItem('wce-theme');
+    if (s) document.documentElement.setAttribute('data-theme', s);
+    else if (window.matchMedia('(prefers-color-scheme:dark)').matches)
+      document.documentElement.setAttribute('data-theme','dark');
+  } catch(e){}
+})();
+</script>
+<style>
+.wrap { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+.lede { font-size: 1.12rem; max-width: 66ch; color: var(--ink); }
+.prose p, .prose li { max-width: 70ch; }
+.prose h3 { font-family: var(--font-display); font-size: 1.3rem; margin: 28px 0 8px; }
+.today-card { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 0; border: 1px solid var(--line-strong); background: var(--panel); }
+.today-main { padding: 28px; border-right: 1px solid var(--line); }
+.today-side { padding: 28px; display: grid; gap: 18px; align-content: start; }
+.t-k { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-dim); }
+.t-big { font-family: var(--font-display); font-size: clamp(2.2rem, 7vw, 3.6rem); line-height: 1.05; margin: 6px 0 4px; }
+.t-sub { color: var(--ink-dim); }
+.t-v { font-family: var(--font-display); font-size: 1.35rem; }
+.month-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; max-width: 420px; margin-top: 18px; }
+.month-grid .h { font-family: var(--font-mono); font-size: 11px; text-align: center; color: var(--ink-dim); padding-bottom: 4px; }
+.month-grid .c { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border: 1px solid var(--line); font-family: var(--font-mono); font-size: 14px; background: var(--paper); }
+.month-grid .c.fri13 { color: var(--accent); font-weight: 600; }
+.month-grid .c.now { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.ribbon { display: grid; grid-template-columns: repeat(13, minmax(0, 1fr)) .6fr; gap: 2px; margin-top: 16px; }
+.ribbon div { height: 34px; background: var(--paper-alt); border: 1px solid var(--line); position: relative; font-family: var(--font-mono); font-size: 10px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 2px; color: var(--ink-dim); overflow: hidden; }
+.ribbon div.done { background: color-mix(in srgb, var(--brass) 28%, var(--paper)); }
+.ribbon div.cur { background: var(--brass); color: var(--paper); }
+.ribbon div.blank { background: repeating-linear-gradient(45deg, var(--paper), var(--paper) 4px, var(--paper-alt) 4px, var(--paper-alt) 8px); }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+.card { border: 1px solid var(--line); background: var(--panel); padding: 20px; }
+.card h3 { font-family: var(--font-display); font-size: 1.2rem; margin: 0 0 8px; }
+.card p { margin: 0 0 10px; }
+.card .live { font-family: var(--font-mono); font-size: 13px; background: var(--paper-alt); border: 1px solid var(--line); padding: 10px 12px; margin-top: 10px; }
+.tbl { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tbl th, .tbl td { border-bottom: 1px solid var(--line); padding: 8px 10px; text-align: left; }
+.tbl th { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--ink-dim); text-transform: uppercase; letter-spacing: .06em; }
+.tbl td.m { font-family: var(--font-mono); }
+.tbl tr.cur td { background: color-mix(in srgb, var(--brass) 16%, transparent); }
+.pc { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 16px; }
+.pc ul { margin: 0; padding-left: 20px; }
+.pc li { margin-bottom: 10px; }
+.pc h3 { margin-top: 0; }
+.pro h3 { color: var(--good); } .con h3 { color: var(--accent); }
+.conv { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
+.conv label { display: grid; gap: 6px; font-family: var(--font-mono); font-size: 12px; color: var(--ink-dim); }
+.conv input { font-size: 16px; min-height: 44px; padding: 8px 10px; border: 1px solid var(--line-strong); background: var(--panel); color: var(--ink); font-family: var(--font-body); }
+.conv-out { margin-top: 14px; display: grid; gap: 6px; }
+.tl { list-style: none; padding: 0; margin: 0; border-left: 2px solid var(--line); }
+.tl li { padding: 0 0 18px 18px; position: relative; max-width: 72ch; }
+.tl li::before { content: ""; position: absolute; left: -6px; top: 6px; width: 10px; height: 10px; background: var(--brass); border-radius: 50%; }
+.tl b.y { font-family: var(--font-mono); margin-right: 8px; }
+.flag { border-left: 3px solid var(--accent-2); padding: 10px 14px; background: color-mix(in srgb, var(--accent-2) 8%, transparent); max-width: 72ch; }
+.src li { margin-bottom: 6px; word-break: break-word; }
+.table-scroll { overflow-x: auto; }
+@media (max-width: 760px) {
+  .today-card { grid-template-columns: 1fr; }
+  .today-main { border-right: 0; border-bottom: 1px solid var(--line); padding: 20px; }
+  .today-side { padding: 20px; }
+  .ribbon div { font-size: 0; }
+}
+</style>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bba4e16a7d9b4d9985eda0cda2624e60"}'></script>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="./" class="brand">
+      <svg class="glyph" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="1.4"/>
+        <circle cx="16" cy="16" r="1.6" fill="currentColor"/>
+        <path d="M16 16 L23 10" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M16 16 L11 22" stroke="currentColor" stroke-width="1"/>
+      </svg>
+      World Calendar Explorer
+    </a>
+    <nav class="section-nav" aria-label="Sections">
+      <a href="#today">Today</a>
+      <a href="#how">How it works</a>
+      <a href="#history">History</a>
+      <a href="#crossing">Meeting other systems</a>
+      <a href="#case">For and against</a>
+      <a href="today">Every calendar today</a>
+      <a href="./">Explorer</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark/light theme">◐ Theme</button>
+  </div>
+</div>
+
+<main>
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div class="eyebrow">Calendar reform · 13 × 28</div>
+      <h1>Thirteen months of twenty-eight days</h1>
+      <p>Every month exactly four weeks, every date on the same weekday every year. It is one of the oldest and most persistent ideas for fixing the calendar, and a large company actually lived by it for six decades. Here is how it works, what today would be, and why the world never switched.</p>
+    </div>
+  </section>
+
+  <section id="today">
+    <div class="wrap">
+      <div class="section-head"><span class="section-num">1</span><h2>Today in the 13-month calendar</h2></div>
+      <p class="section-sub">Your local date, read in the International Fixed Calendar (the 13-month plan with a Year Day), as if it had been in use this year.</p>
+      <div class="today-card">
+        <div class="today-main">
+          <div class="t-k">International Fixed Calendar</div>
+          <div class="t-big" id="ifcBig"><!--static:ifc-->21 October 2026<!--/static--></div>
+          <div class="t-sub" id="ifcSub"><!--static:ifcsub-->Saturday · Gregorian Wednesday 28 October 2026<!--/static--></div>
+          <div class="month-grid" id="monthGrid" aria-label="This month in the 13-month calendar"></div>
+          <div class="ribbon" id="ribbon" aria-hidden="true"></div>
+          <p class="small" id="ribbonNote" style="margin-top:8px"></p>
+        </div>
+        <div class="today-side">
+          <div><div class="t-k">Day of the year</div><div class="t-v" id="doy">—</div></div>
+          <div><div class="t-k">Until Year Day</div><div class="t-v" id="toYD">—</div></div>
+          <div><div class="t-k">Thirteen Moon count (Dreamspell)</div><div class="t-v" id="tm">—</div>
+            <div class="small">A different, modern 13 × 28 system that starts the year on 26 July. Not a Maya calendar: see <a href="https://followorbounce.github.io/Maya-Calendar/dreamspell.html">the Dreamspell and the Maya count</a>.</div></div>
+          <div><div class="t-k">Every other calendar</div><div class="small"><a href="today">Today in all the calendars on this site →</a></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap prose">
+      <div class="section-head"><span class="section-num">2</span><h2>How it works</h2></div>
+      <p class="lede">Thirteen months of 28 days make 364 days, exactly 52 weeks. The Sun's year is about 365.2422 days, so one day (two in leap years) has to live outside the months.</p>
+      <div class="cols">
+        <div class="card"><h3>13 equal months</h3><p>January to June, then a new month, <b>Sol</b>, then July to December. Each has 28 days and starts on a Sunday, so every month looks exactly like the grid in the card above: the 1st is always Sunday, the 28th always Saturday.</p></div>
+        <div class="card"><h3>Year Day</h3><p>After 28 December comes <b>Year Day</b>, a holiday that belongs to no month and no week: it is not a Monday or a Saturday, just Year Day. Then 1 January is a Sunday again.</p></div>
+        <div class="card"><h3>Leap Day</h3><p>In leap years (the same Gregorian rule: every 4 years, except centuries not divisible by 400) a <b>Leap Day</b> follows 28 June, also outside the week. So the calendar keeps step with the seasons exactly as the Gregorian one does.</p></div>
+        <div class="card"><h3>What stays fixed</h3><p>Every date falls on the same weekday forever. Every month has four of each weekday, 20 working days in a Monday-to-Friday week, and the same number of weekends. And every month has a Friday the 13th.</p></div>
+      </div>
+      <h3>Converter</h3>
+      <div class="panel" style="padding:18px">
+        <div class="conv">
+          <label for="convDate">Gregorian date<input type="date" id="convDate"></label>
+        </div>
+        <div class="conv-out" id="convOut" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="history">
+    <div class="wrap prose">
+      <div class="section-head"><span class="section-num">3</span><h2>Where the idea came from</h2></div>
+      <ul class="tl">
+        <li><b class="y">1849</b>The philosopher Auguste Comte publishes the <b>Positivist calendar</b>: 13 months of 28 days, each named after a figure he admired, with an extra festival day outside the weeks (and a second one in leap years). It never caught on beyond his followers.</li>
+        <li><b class="y">1902</b>Moses B. Cotsworth, a British railway statistician, proposes the 13-month plan with Year Day that becomes known as the <b>International Fixed Calendar</b>. His motive is practical: equal months make one month's figures comparable with the next.</li>
+        <li><b class="y">1920s</b>The League of Nations sets up a committee to study calendar reform. It looks at well over a hundred proposals and treats the 13-month plan as one of the most serious. Cotsworth works with the committee; no reform is adopted.</li>
+        <li><b class="y">1928</b><b>Eastman Kodak</b> adopts the 13-month calendar for its internal accounting, backed by its founder George Eastman, who also financed the campaign for it. Kodak keeps it until 1989 (one account says 1982).</li>
+        <li><b class="y">1930</b>Elisabeth Achelis starts promoting a rival, the <b>World Calendar</b>: it keeps 12 months but makes every quarter 91 days and uses the same trick of a blank day outside the week. In the mid-1950s the United Nations considers it and sets it aside, largely over the broken week (below).</li>
+        <li><b class="y">1987–1990</b>José and Lloydine Argüelles publish the <b>Dreamspell</b> "13 Moon" calendar: 13 × 28 again, starting the year on 26 July with a "Day Out of Time" on 25 July and no count for 29 February. It is often presented as Maya; it is a modern creation (<a href="https://followorbounce.github.io/Maya-Calendar/dreamspell.html">how it differs</a>).</li>
+        <li><b class="y">2012</b>Steve Hanke and Richard Conn Henry propose a <b>permanent calendar</b> that solves the same problem the other way: 12 months, 364 days, and a whole extra week every five or six years, so the seven-day week is never broken.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="crossing">
+    <div class="wrap prose">
+      <div class="section-head"><span class="section-num">4</span><h2>Where it meets other systems</h2></div>
+      <p class="section-sub">A calendar does not live alone. These are the places where 13 × 28 rubs against the week, the Moon and the calendars people already keep.</p>
+      <div class="cols">
+        <div class="card"><h3>The seven-day week</h3>
+          <p>The week has run unbroken for more than two thousand years, independent of any calendar. Year Day and Leap Day are not weekdays, so each one pushes the 13-month calendar's weekdays one step away from the real, continuous week.</p>
+          <p>That is the single biggest reason the plan failed: a day of rest kept every seventh day (the Jewish Sabbath, the Christian Sunday, the Muslim Friday prayer) would drift across the 13-month weekdays, landing on a different named day every year. Orthodox Jewish groups, Seventh-day Adventists and others opposed it on exactly this point.</p>
+          <div class="live" id="drift"></div></div>
+        <div class="card"><h3>The Moon</h3>
+          <p>"13 moons" is a misreading. The Moon's cycle of phases (the synodic month) averages 29.53 days, so a solar year holds about 12.37 of them, not 13. A 28-day month that starts at a new moon ends 1.5 days before the next one, and by the end of the year the months are about 20 days (two-thirds of a lunation) out of step with the phases.</p>
+          <div class="live" id="moonLive"></div></div>
+        <div class="card"><h3>The Gregorian months</h3>
+          <p>Because both calendars use the same year and leap rule, they always agree on 1 January and on the day of the year. Only the month boundaries move: until June a 13-month date comes earlier than the Gregorian date of the same name (1 June is Gregorian 21 May), after Sol it comes later (1 July is Gregorian 16 July), and the two only meet again at the end of the year.</p>
+          <div class="table-scroll"><table class="tbl" id="starts" aria-label="Where each 13-month month starts in the Gregorian calendar this year"></table></div></div>
+        <div class="card"><h3>Lunar and lunisolar calendars</h3>
+          <p>The Islamic calendar follows the Moon (12 months, about 354 days) and the Hebrew calendar follows Moon and Sun (12 months, with a 13th month added in 7 years of every 19). Their festivals are counted in their own months, so a solar reform would not move them, but their weekly days of worship would meet the drift described above.</p>
+          <p>The Hebrew "13-month year" is a different idea altogether: an extra lunar month to stay in step with the seasons, not 13 equal months.</p></div>
+        <div class="card"><h3>Calendars with fixed months that exist today</h3>
+          <p>Equal months are not just a proposal. The <b>Ethiopian</b> and <b>Coptic</b> calendars have 12 months of 30 days plus a short 13th month of 5 or 6 days, still in daily civil and church use, and they let the ordinary week run straight through the extra days. The French Republican calendar (1793–1805) also had 12 × 30 + 5 or 6, but replaced the week with ten-day <i>décades</i>, one reason it was dropped.</p>
+          <p><a href="./#encyclopedia">Read them in the encyclopedia →</a></p></div>
+        <div class="card"><h3>Weeks, quarters and accounts</h3>
+          <p>ISO 8601 week dates already number the year in weeks (52, sometimes 53). Many retailers keep a 13-period year of four-week periods, or a 4-4-5 week quarter, for the same reason Kodak did. But 13 is a prime number: a 13-month year has no clean halves or quarters (each quarter is 3¼ months), which is awkward for anything reported quarterly.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="case">
+    <div class="wrap prose">
+      <div class="section-head"><span class="section-num">5</span><h2>For and against</h2></div>
+      <div class="pc">
+        <div class="card pro"><h3>The case for</h3><ul>
+          <li><b>One calendar for every year.</b> A date is always the same weekday, so timetables, school terms, shift rotas and printed calendars never need redoing.</li>
+          <li><b>Comparable months.</b> Every month has the same number of days and of each weekday, so this month's sales, wages or traffic compare directly with last month's. This is what Kodak used it for.</li>
+          <li><b>Simple arithmetic.</b> Four weeks a month; the weekday of any date is (day − 1) mod 7 from Sunday. Children could learn it in an afternoon.</li>
+          <li><b>Predictable holidays.</b> A holiday on a fixed date is on the same weekday every year, so long weekends could be planned for good.</li>
+          <li><b>Same seasons as now.</b> It keeps the Gregorian year and leap rule, so solstices, equinoxes and the seasons fall exactly where they do today.</li>
+        </ul></div>
+        <div class="card con"><h3>The case against</h3><ul>
+          <li><b>It breaks the week.</b> Year Day and Leap Day sit outside the seven-day cycle, which moves days of worship against the named weekdays (see above). This was decisive in the 1930s and 1950s and would be again.</li>
+          <li><b>Thirteen does not divide.</b> No halves, no quarters, no 3-month seasons: fiscal reporting, tax quarters and many contracts are built on fourths of a year.</li>
+          <li><b>Every date changes.</b> Birthdays, anniversaries, deadlines, contracts and historical records would all need re-mapping; numeric dates (7/1 is 1 Sol, not 1 July) would be ambiguous for a generation.</li>
+          <li><b>Days outside the week need rules.</b> Is Year Day a paid day? Does interest accrue? Every legal and payroll system would need an answer.</li>
+          <li><b>Not lunar either.</b> 28-day months look Moon-like but drift from the real phases just as fast as the Gregorian months do.</li>
+          <li><b>A Friday the 13th every month,</b> for whoever minds that.</li>
+        </ul></div>
+      </div>
+      <p class="flag" style="margin-top:20px">The honest summary: as arithmetic it is cleaner than the Gregorian calendar; as a social object it asks the whole world to re-date everything and to stop the week for one or two days a year. Proposals that keep the week (leap-week calendars) answer the main objection but give up the "one calendar forever" property only partly. None has been adopted.</p>
+    </div>
+  </section>
+
+  <section id="sources">
+    <div class="wrap prose">
+      <div class="section-head"><span class="section-num">6</span><h2>Sources and method</h2></div>
+      <p>The dates are computed in your browser from your device's local date by <code>js/calendars/thirteen.js</code>, which was checked against an independent day-by-day walk of the calendar for every date from 2020 to 2031 (4,383 dates, no differences). History:</p>
+      <ul class="src">
+        <li><a href="https://en.wikipedia.org/wiki/International_Fixed_Calendar">International Fixed Calendar</a> and <a href="https://en.wikipedia.org/wiki/Moses_B._Cotsworth">Moses B. Cotsworth</a>, Wikipedia</li>
+        <li><a href="https://rbscarchives.library.ubc.ca/cotsworth-moses-bruine">Moses Cotsworth fonds</a>, University of British Columbia Rare Books and Special Collections</li>
+        <li><a href="https://www.bloomberg.com/news/articles/2014-12-11/the-death-and-life-of-the-13-month-calendar">The death and life of the 13-month calendar</a>, Bloomberg, 2014</li>
+        <li><a href="https://en.wikipedia.org/wiki/Positivist_calendar">Positivist calendar</a>, Wikipedia</li>
+        <li><a href="https://sapiens.org/culture/calendar-reform">Calendar reform</a>, Sapiens</li>
+        <li><a href="https://followorbounce.github.io/Maya-Calendar/dreamspell.html">The Dreamspell and the Maya count</a>, Maya Calendar (this network)</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Part of <a href="./">World Calendar Explorer</a>. The 13-month calendar is shown "as if adopted this year": it has never been an official civil calendar anywhere.</p>
+</footer>
+
+<script src="js/calendars/thirteen.js"></script>
+<script>
+(function () {
+  "use strict";
+  var T = Thirteen, $ = function (id) { return document.getElementById(id); };
+  var WD = T.WEEKDAYS;
+  function today() { var n = new Date(); return { y: n.getFullYear(), m: n.getMonth() + 1, d: n.getDate() }; }
+  function gregName(g) {
+    var dt = new Date(g.y, g.m - 1, g.d);
+    return dt.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+
+  function render() {
+    var g = today(), r = T.ifc(g.y, g.m, g.d);
+    $('ifcBig').textContent = r.special ? r.special : r.day + ' ' + r.monthName + ' ' + r.year;
+    $('ifcSub').textContent = (r.special ? 'Outside the week' : r.weekday) + ' · Gregorian ' + gregName(g);
+    // month grid
+    var grid = $('monthGrid'), html = '';
+    WD.forEach(function (w) { html += '<div class="h">' + w.slice(0, 3) + '</div>'; });
+    for (var i = 1; i <= 28; i++) {
+      html += '<div class="c' + (i === 13 ? ' fri13' : '') + (!r.special && i === r.day ? ' now' : '') + '"' +
+        (i === 13 ? ' title="Every month has a Friday the 13th"' : '') + '>' + i + '</div>';
+    }
+    grid.innerHTML = html;
+    // ribbon: 13 months + Year Day
+    var rib = '', cur = r.special === 'Year Day' ? 13 : (r.month ? r.month - 1 : 5.5);
+    T.IFC_MONTHS.forEach(function (name, i) {
+      rib += '<div class="' + (i < cur ? 'done' : i === cur ? 'cur' : '') + '" title="' + name + '">' + name.slice(0, 3) + '</div>';
+    });
+    rib += '<div class="blank' + (r.special === 'Year Day' ? ' cur' : '') + '" title="Year Day">YD</div>';
+    $('ribbon').innerHTML = rib;
+    var leap = T.isLeap(g.y);
+    $('ribbonNote').textContent = 'Month ' + (r.month || '—') + ' of 13' + (leap ? '. This is a leap year: Leap Day falls between June and Sol (Gregorian 17 June).' : '.');
+    var doy = T.dayOfYear(g.y, g.m, g.d), len = leap ? 366 : 365;
+    $('doy').textContent = doy + ' of ' + len;
+    $('toYD').textContent = (len - doy) === 0 ? 'Today' : (len - doy) + ' day' + (len - doy === 1 ? '' : 's');
+    var tm = T.thirteenMoon(g.y, g.m, g.d);
+    $('tm').textContent = tm.label;
+    // month starts this year
+    var rows = '<tr><th>Month</th><th>Starts (Gregorian)</th><th>Ends</th></tr>';
+    for (var mo = 1; mo <= 13; mo++) {
+      var a = T.ifcToGregorian(g.y, mo, 1), b = T.ifcToGregorian(g.y, mo, 28);
+      rows += '<tr' + (r.month === mo ? ' class="cur"' : '') + '><td>' + T.IFC_MONTHS[mo - 1] + '</td><td class="m">' + fmt(a) + '</td><td class="m">' + fmt(b) + '</td></tr>';
+    }
+    if (leap) { var ld = T.ifcToGregorian(g.y, -1, 0); rows += '<tr' + (r.special === 'Leap Day' ? ' class="cur"' : '') + '><td>Leap Day</td><td class="m" colspan="2">' + fmt(ld) + '</td></tr>'; }
+    var yd = T.ifcToGregorian(g.y, 0, 0);
+    rows += '<tr' + (r.special === 'Year Day' ? ' class="cur"' : '') + '><td>Year Day</td><td class="m" colspan="2">' + fmt(yd) + '</td></tr>';
+    $('starts').innerHTML = rows;
+    // week drift: if adopted on 1 January 2023 (a real Sunday), how far the 13-month weekdays sit from the real week today
+    var blanks = 0;
+    for (var y = 2023; y < g.y; y++) blanks += T.isLeap(y) ? 2 : 1;
+    if (leap && doy > 169) blanks += 1;
+    var realWd = new Date(g.y, g.m - 1, g.d).getDay();
+    $('drift').innerHTML = 'If the plan had started on Sunday 1 January 2023 (a real Sunday), ' + blanks + ' day' + (blanks === 1 ? '' : 's') +
+      ' outside the week would have passed by today. Today is a real <b>' + WD[realWd] + '</b>' +
+      (r.special ? '' : ' but a 13-month <b>' + esc(r.weekday) + '</b>') + '; the real Saturday would be the 13-month <b>' + WD[(6 - blanks % 7 + 7) % 7] + '</b>, and the real Sunday the 13-month <b>' + WD[(7 - blanks % 7) % 7] + '</b>.';
+    // moon: days since a known new moon (2000-01-06 18:14 UTC), synodic month 29.530589 d
+    var now = new Date(), age = ((now.getTime() / 864e5 - (Date.UTC(2000, 0, 6, 18, 14) / 864e5)) % 29.530589 + 29.530589) % 29.530589;
+    var lunations = (365.2422 / 29.530589).toFixed(2);
+    $('moonLive').textContent = 'Today the Moon is about ' + age.toFixed(1) + ' days past new (mean value, ±0.5 d). A year holds ' + lunations + ' lunations.';
+  }
+  function fmt(g) { return new Date(g.y, g.m - 1, g.d).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }); }
+
+  function convert() {
+    var v = $('convDate').value; if (!v) return;
+    var p = v.split('-').map(Number), r = T.ifc(p[0], p[1], p[2]), tm = T.thirteenMoon(p[0], p[1], p[2]);
+    var g = gregName({ y: p[0], m: p[1], d: p[2] });
+    $('convOut').innerHTML = '<div><span class="t-k">Gregorian</span> ' + esc(g) + '</div>' +
+      '<div><span class="t-k">13-month</span> <b>' + esc(r.special ? r.label : r.label + ', a ' + r.weekday) + '</b>' +
+      (r.special ? ' (outside the week)' : ': every year, this date would be a ' + r.weekday) + '</div>' +
+      '<div><span class="t-k">13 Moon</span> ' + esc(tm.label) + '</div>';
+  }
+  var t = today();
+  $('convDate').value = t.y + '-' + String(t.m).padStart(2, '0') + '-' + String(t.d).padStart(2, '0');
+  $('convDate').addEventListener('input', convert);
+  render(); convert();
+  // re-render after local midnight
+  var n = new Date(), ms = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 0, 0, 5) - n;
+  setTimeout(function tick() { render(); setTimeout(tick, 864e5); }, ms);
+
+  document.getElementById('themeToggle').addEventListener('click', function () {
+    var cur = document.documentElement.getAttribute('data-theme') ||
+      (window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light');
+    var next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('fb-theme', next); } catch (e) {}
+  });
+})();
+</script>
+<!-- fob-network -->
+<aside class="fob-net" aria-label="More from Follow or Bounce"><style>.fob-net{border-top:1px solid;border-color:color-mix(in srgb,currentColor 22%,transparent);margin-top:48px;padding:28px max(16px,env(safe-area-inset-right,0px)) calc(28px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));font-size:15px;line-height:1.45;clear:both}.fob-net>div{max-width:72rem;margin:0 auto}.fob-net p{margin:0 0 14px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;opacity:.75}.fob-net p a{color:inherit;font-weight:600}.fob-net ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));gap:10px 28px}.fob-net li a{display:block;min-height:44px;color:inherit;text-decoration:none}.fob-net li b{display:block;font-weight:600;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}.fob-net li span{display:block;opacity:.72}.fob-net a:focus-visible{outline:2px solid currentColor;outline-offset:3px}</style><div><p><a href="https://followorbounce.github.io/">Follow or Bounce</a> · more from the studio</p><ul><li><a href="https://followorbounce.github.io/Maya-Calendar/"><b>Ju&#x27;un K&#x27;in</b><span>The Classic Maya calendar, computed live</span></a></li><li><a href="https://followorbounce.github.io/life-in-weeks"><b>Life in Weeks</b><span>Your life as a grid of weeks</span></a></li><li><a href="https://followorbounce.github.io/country-atlas/"><b>Country Comparison Atlas</b><span>Any two countries side by side</span></a></li></ul></div></aside>
+<!-- /fob-network -->
+</body>
+</html>
