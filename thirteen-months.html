@@ -79,7 +79,64 @@
 .flag { border-left: 3px solid var(--accent-2); padding: 10px 14px; background: color-mix(in srgb, var(--accent-2) 8%, transparent); max-width: 72ch; }
 .src li { margin-bottom: 6px; word-break: break-word; }
 .table-scroll { overflow-x: auto; }
+.ex-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 14px 0 10px; }
+.ex-year { display: inline-flex; align-items: center; border: 1px solid var(--line-strong); }
+.ex-year button, .ex-today, .ex-tabs button { min-height: 44px; min-width: 44px; font: 500 15px var(--font-body); background: var(--panel); color: var(--ink); border: 0; cursor: pointer; }
+.ex-year span { font-family: var(--font-display); font-size: 1.35rem; padding: 0 12px; min-width: 4.2ch; text-align: center; }
+.ex-today { border: 1px solid var(--line-strong); padding: 0 14px; }
+.ex-count { font-family: var(--font-mono); font-size: 13px; color: var(--ink-dim); }
+.ex-tabs { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 14px; }
+.ex-tabs button { border: 1px solid var(--line); padding: 0 10px; font-size: 14px; }
+.ex-tabs button[aria-selected="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.ex-tabs button.blank { background: repeating-linear-gradient(45deg, var(--panel), var(--panel) 5px, var(--paper-alt) 5px, var(--paper-alt) 10px); font-style: italic; }
+.ex-tabs button.blank[aria-selected="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+.ex-tabs button.has-today { box-shadow: inset 0 -3px 0 var(--brass); }
+.ex-main { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.ex-mhead { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; align-items: baseline; margin-bottom: 8px; }
+.ex-mhead span:first-child { font-family: var(--font-display); font-size: 1.6rem; }
+.ex-mrange { font-family: var(--font-mono); font-size: 13px; color: var(--ink-dim); }
+.ex-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+.ex-grid .h { font-family: var(--font-mono); font-size: 11px; text-align: center; color: var(--ink-dim); }
+.ex-grid button { min-height: 58px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; display: grid; align-content: center; justify-items: center; gap: 2px; padding: 4px 2px; font-family: var(--font-body); }
+.ex-grid button b { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; line-height: 1; }
+.ex-grid button small { font-family: var(--font-mono); font-size: 11px; color: var(--ink-dim); white-space: nowrap; }
+.ex-grid button.gm small { color: var(--accent-2); font-weight: 600; }
+.ex-grid button.f13 b { color: var(--accent); }
+.ex-grid button.today { box-shadow: inset 0 0 0 2px var(--brass); }
+.ex-grid button[aria-selected="true"] { background: var(--ink); border-color: var(--ink); }
+.ex-grid button[aria-selected="true"] b, .ex-grid button[aria-selected="true"] small { color: var(--paper); }
+.ex-grid button:focus-visible, .ex-extra button:focus-visible, .ex-strip:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+.ex-extra { margin-top: 6px; display: grid; gap: 4px; }
+.ex-extra button { min-height: 52px; width: 100%; border: 1px dashed var(--accent); background: repeating-linear-gradient(45deg, var(--panel), var(--panel) 6px, var(--paper-alt) 6px, var(--paper-alt) 12px); color: var(--ink); cursor: pointer; font: 500 15px var(--font-body); text-align: left; padding: 8px 14px; }
+.ex-extra button small { display: block; font-family: var(--font-mono); font-size: 12px; color: var(--ink-dim); }
+.ex-extra button[aria-selected="true"] { background: var(--accent); color: #fff; border-style: solid; }
+.ex-extra button[aria-selected="true"] small { color: #fff; }
+.ex-detail { border: 1px solid var(--line-strong); background: var(--panel); padding: 20px; display: grid; gap: 12px; }
+.ex-detail .big { font-family: var(--font-display); font-size: 1.9rem; line-height: 1.1; }
+.ex-detail .kv { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; font-size: 15px; }
+.ex-detail .kv span:nth-child(odd) { font-family: var(--font-mono); font-size: 12px; color: var(--ink-dim); text-transform: uppercase; letter-spacing: .06em; padding-top: 2px; }
+.ex-strip-wrap { margin-top: 24px; }
+.ex-strip { position: relative; height: 74px; margin-top: 8px; border: 1px solid var(--line); background: var(--panel); cursor: pointer; touch-action: pan-y; user-select: none; }
+.ex-strip .g, .ex-strip .i { position: absolute; height: 30px; font-family: var(--font-mono); font-size: 10px; overflow: hidden; display: flex; align-items: center; justify-content: center; color: var(--ink-dim); border-right: 1px solid var(--line); }
+.ex-strip .g { top: 0; } .ex-strip .i { top: 34px; }
+.ex-strip .g:nth-child(odd) { background: color-mix(in srgb, var(--accent-2) 10%, transparent); }
+.ex-strip .i.odd { background: color-mix(in srgb, var(--brass) 16%, transparent); }
+.ex-strip .i.blank { background: var(--accent); color: #fff; }
+.ex-strip .cur { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--ink); pointer-events: none; }
+.ex-strip .now { position: absolute; bottom: 2px; height: 6px; width: 6px; margin-left: -3px; background: var(--brass); border-radius: 50%; pointer-events: none; }
+.ex-h3 { font-family: var(--font-display); font-size: 1.3rem; margin: 28px 0 10px; }
+.ex-conv { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 16px; }
+.ex-cbox { padding: 18px; display: grid; gap: 12px; align-content: start; }
+.ex-cbox label { display: grid; gap: 6px; font-family: var(--font-mono); font-size: 12px; color: var(--ink-dim); }
+.ex-cbox input, .ex-cbox select { font-size: 16px; min-height: 44px; padding: 8px 10px; border: 1px solid var(--line-strong); background: var(--panel); color: var(--ink); font-family: var(--font-body); width: 100%; }
+.ex-crow { display: grid; grid-template-columns: 1fr 1.6fr 1fr; gap: 10px; }
+.ex-cout { font-size: 15px; display: grid; gap: 4px; }
+.ex-cout b { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; }
 @media (max-width: 760px) {
+  .ex-main { grid-template-columns: 1fr; }
+  .ex-grid button { min-height: 50px; }
+  .ex-grid button small { font-size: 9.5px; }
+  .ex-strip .g, .ex-strip .i { font-size: 0; }
   .today-card { grid-template-columns: 1fr; }
   .today-main { border-right: 0; border-bottom: 1px solid var(--line); padding: 20px; }
   .today-side { padding: 20px; }
@@ -104,6 +161,7 @@
     <nav class="section-nav" aria-label="Sections">
       <a href="#today">Today</a>
       <a href="#how">How it works</a>
+      <a href="#explore">Explore</a>
       <a href="#history">History</a>
       <a href="#crossing">Meeting other systems</a>
       <a href="#case">For and against</a>
@@ -157,19 +215,62 @@
         <div class="card"><h3>Leap Day</h3><p>In leap years (the same Gregorian rule: every 4 years, except centuries not divisible by 400) a <b>Leap Day</b> follows 28 June, also outside the week. So the calendar keeps step with the seasons exactly as the Gregorian one does.</p></div>
         <div class="card"><h3>What stays fixed</h3><p>Every date falls on the same weekday forever. Every month has four of each weekday, 20 working days in a Monday-to-Friday week, and the same number of weekends. And every month has a Friday the 13th.</p></div>
       </div>
-      <h3>Converter</h3>
-      <div class="panel" style="padding:18px">
-        <div class="conv">
-          <label for="convDate">Gregorian date<input type="date" id="convDate"></label>
+    </div>
+  </section>
+
+  <section id="explore">
+    <div class="wrap">
+      <div class="section-head"><span class="section-num">3</span><h2>Explore it, month by month</h2></div>
+      <p class="section-sub">Pick a year and a month. Every 13-month day shows the civil (Gregorian) date it falls on. Year Day and Leap Day get their own tiles: 13 × 28 is 364, and the 365th (and 366th) day is never dropped. Arrow keys move day by day.</p>
+
+      <div class="ex-bar">
+        <div class="ex-year" role="group" aria-label="Year">
+          <button type="button" id="yPrev" aria-label="Previous year">‹</button>
+          <span id="yLabel">2026</span>
+          <button type="button" id="yNext" aria-label="Next year">›</button>
         </div>
-        <div class="conv-out" id="convOut" aria-live="polite"></div>
+        <button type="button" id="goToday" class="ex-today">Today</button>
+        <span class="ex-count" id="yCount"></span>
+      </div>
+      <div class="ex-tabs" id="tabs" role="tablist" aria-label="13-month months"></div>
+
+      <div class="ex-main">
+        <div class="ex-month">
+          <div class="ex-mhead"><span id="mTitle">October</span><span class="ex-mrange" id="mRange"></span></div>
+          <div class="ex-grid" id="exGrid" role="grid" aria-label="Days of the month"></div>
+          <div class="ex-extra" id="exExtra"></div>
+        </div>
+        <div class="ex-detail" id="exDetail" aria-live="polite"></div>
+      </div>
+
+      <div class="ex-strip-wrap">
+        <div class="t-k">The whole year: civil months above, 13-month months below, blank days marked</div>
+        <div class="ex-strip" id="strip" role="slider" tabindex="0" aria-label="Day of the year" aria-valuemin="1"></div>
+      </div>
+
+      <h3 class="ex-h3">Convert either way</h3>
+      <div class="ex-conv">
+        <form class="panel ex-cbox" id="c1">
+          <div class="t-k">Civil (Gregorian) → 13-month</div>
+          <label for="cG">Civil date<input type="date" id="cG" required></label>
+          <div class="ex-cout" id="c1out" aria-live="polite"></div>
+        </form>
+        <form class="panel ex-cbox" id="c2">
+          <div class="t-k">13-month → civil (Gregorian)</div>
+          <div class="ex-crow">
+            <label for="cY">Year<input type="number" id="cY" min="1" max="9999" inputmode="numeric"></label>
+            <label for="cM">Month<select id="cM"></select></label>
+            <label for="cD">Day<select id="cD"></select></label>
+          </div>
+          <div class="ex-cout" id="c2out" aria-live="polite"></div>
+        </form>
       </div>
     </div>
   </section>
 
   <section id="history">
     <div class="wrap prose">
-      <div class="section-head"><span class="section-num">3</span><h2>Where the idea came from</h2></div>
+      <div class="section-head"><span class="section-num">4</span><h2>Where the idea came from</h2></div>
       <ul class="tl">
         <li><b class="y">1849</b>The philosopher Auguste Comte publishes the <b>Positivist calendar</b>: 13 months of 28 days, each named after a figure he admired, with an extra festival day outside the weeks (and a second one in leap years). It never caught on beyond his followers.</li>
         <li><b class="y">1902</b>Moses B. Cotsworth, a British railway statistician, proposes the 13-month plan with Year Day that becomes known as the <b>International Fixed Calendar</b>. His motive is practical: equal months make one month's figures comparable with the next.</li>
@@ -184,7 +285,7 @@
 
   <section id="crossing">
     <div class="wrap prose">
-      <div class="section-head"><span class="section-num">4</span><h2>Where it meets other systems</h2></div>
+      <div class="section-head"><span class="section-num">5</span><h2>Where it meets other systems</h2></div>
       <p class="section-sub">A calendar does not live alone. These are the places where 13 × 28 rubs against the week, the Moon and the calendars people already keep.</p>
       <div class="cols">
         <div class="card"><h3>The seven-day week</h3>
@@ -211,7 +312,7 @@
 
   <section id="case">
     <div class="wrap prose">
-      <div class="section-head"><span class="section-num">5</span><h2>For and against</h2></div>
+      <div class="section-head"><span class="section-num">6</span><h2>For and against</h2></div>
       <div class="pc">
         <div class="card pro"><h3>The case for</h3><ul>
           <li><b>One calendar for every year.</b> A date is always the same weekday, so timetables, school terms, shift rotas and printed calendars never need redoing.</li>
@@ -235,7 +336,7 @@
 
   <section id="sources">
     <div class="wrap prose">
-      <div class="section-head"><span class="section-num">6</span><h2>Sources and method</h2></div>
+      <div class="section-head"><span class="section-num">7</span><h2>Sources and method</h2></div>
       <p>The dates are computed in your browser from your device's local date by <code>js/calendars/thirteen.js</code>, which was checked against an independent day-by-day walk of the calendar for every date from 2020 to 2031 (4,383 dates, no differences). History:</p>
       <ul class="src">
         <li><a href="https://en.wikipedia.org/wiki/International_Fixed_Calendar">International Fixed Calendar</a> and <a href="https://en.wikipedia.org/wiki/Moses_B._Cotsworth">Moses B. Cotsworth</a>, Wikipedia</li>
@@ -317,22 +418,199 @@
   }
   function fmt(g) { return new Date(g.y, g.m - 1, g.d).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }); }
 
-  function convert() {
-    var v = $('convDate').value; if (!v) return;
-    var p = v.split('-').map(Number), r = T.ifc(p[0], p[1], p[2]), tm = T.thirteenMoon(p[0], p[1], p[2]);
-    var g = gregName({ y: p[0], m: p[1], d: p[2] });
-    $('convOut').innerHTML = '<div><span class="t-k">Gregorian</span> ' + esc(g) + '</div>' +
-      '<div><span class="t-k">13-month</span> <b>' + esc(r.special ? r.label : r.label + ', a ' + r.weekday) + '</b>' +
-      (r.special ? ' (outside the week)' : ': every year, this date would be a ' + r.weekday) + '</div>' +
-      '<div><span class="t-k">13 Moon</span> ' + esc(tm.label) + '</div>';
+  render();
+  /* ---------- Explore: month view, year strip, two-way converter ----------
+     One selection {y, n}: a year and a Gregorian day of the year (1..365/366). Every control reads and writes it,
+     so stepping day by day passes through Leap Day and Year Day like any other day. */
+  var MON3 = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  function yearLen(y) { return T.isLeap(y) ? 366 : 365; }
+  function civil(y, n) {                                   // Gregorian date of day n of year y
+    var lens = [31, T.isLeap(y) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31], m = 0;
+    while (n > lens[m]) { n -= lens[m]; m++; }
+    return { y: y, m: m + 1, d: n };
   }
-  var t = today();
-  $('convDate').value = t.y + '-' + String(t.m).padStart(2, '0') + '-' + String(t.d).padStart(2, '0');
-  $('convDate').addEventListener('input', convert);
-  render(); convert();
+  function civilWeekday(g) { var dt = new Date(2000, 0, 1); dt.setFullYear(g.y, g.m - 1, g.d); return WD[dt.getDay()]; }
+  function civilText(g, wd) { return (wd ? civilWeekday(g) + ' ' : '') + g.d + ' ' + MONTHS[g.m - 1] + ' ' + g.y; }
+  function nOfIfc(y, month, day) { var g = T.ifcToGregorian(y, month, day); return T.dayOfYear(g.y, g.m, g.d); }
+  var sel = null, todayRef = null;
+
+  function tabsFor(y) {                                    // [key, label, blank?] in calendar order; the blank days included
+    var t = [];
+    T.IFC_MONTHS.forEach(function (name, i) {
+      t.push(['M' + (i + 1), name, false]);
+      if (i === 5 && T.isLeap(y)) t.push(['LD', 'Leap Day', true]);
+    });
+    t.push(['YD', 'Year Day', true]);
+    return t;
+  }
+  function tabOf(y, n) { var g = civil(y, n), r = T.ifc(g.y, g.m, g.d); return r.special === 'Leap Day' ? 'LD' : r.special === 'Year Day' ? 'YD' : 'M' + r.month; }
+
+  function setSel(y, n, from) {
+    if (y < 1) { y = 1; n = 1; } if (y > 9999) { y = 9999; n = yearLen(9999); }
+    while (n < 1) { y -= 1; n += yearLen(y); }
+    while (n > yearLen(y)) { n -= yearLen(y); y += 1; }
+    sel = { y: y, n: n };
+    drawExplore(from);
+  }
+
+  function drawExplore(from) {
+    var y = sel.y, n = sel.n, g = civil(y, n), r = T.ifc(g.y, g.m, g.d), tab = tabOf(y, n), len = yearLen(y);
+    var tr = todayRef, isTodayYear = tr && tr.y === y;
+    $('yLabel').textContent = y;
+    $('yCount').textContent = T.isLeap(y) ? '366 days = 13 × 28 + Leap Day + Year Day' : '365 days = 13 × 28 + Year Day';
+    // tabs
+    var todayTab = isTodayYear ? tabOf(y, tr.n) : null;
+    $('tabs').innerHTML = tabsFor(y).map(function (t) {
+      var on = t[0] === tab;
+      return '<button type="button" role="tab" data-tab="' + t[0] + '" aria-selected="' + on + '" class="' + (t[2] ? 'blank' : '') + (t[0] === todayTab ? ' has-today' : '') + '">' + t[1] + '</button>';
+    }).join('');
+    // which month to draw: a blank day shows the month it follows, with its tile selected
+    var month = tab === 'LD' ? 6 : tab === 'YD' ? 13 : r.month;
+    $('mTitle').textContent = T.IFC_MONTHS[month - 1] + ' ' + y;
+    var a = civil(y, nOfIfc(y, month, 1)), b = civil(y, nOfIfc(y, month, 28));
+    $('mRange').textContent = 'civil ' + a.d + ' ' + MON3[a.m - 1] + ' – ' + b.d + ' ' + MON3[b.m - 1];
+    var html = '';
+    WD.forEach(function (w) { html += '<div class="h">' + w.slice(0, 3) + '</div>'; });
+    for (var d = 1; d <= 28; d++) {
+      var dn = nOfIfc(y, month, d), c = civil(y, dn);
+      html += '<button type="button" role="gridcell" data-n="' + dn + '" aria-selected="' + (dn === n) + '" aria-label="' + T.IFC_MONTHS[month - 1] + ' ' + d + ', ' + WD[(d - 1) % 7] + ', civil ' + civilText(c) + '"' +
+        ' tabindex="' + (dn === n ? 0 : -1) + '" class="' + (c.d === 1 ? 'gm' : '') + (d === 13 ? ' f13' : '') + (isTodayYear && dn === tr.n ? ' today' : '') + '">' +
+        '<b>' + d + '</b><small>' + c.d + ' ' + MON3[c.m - 1] + '</small></button>';
+    }
+    $('exGrid').innerHTML = html;
+    // the blank day(s) after this month
+    var extra = '';
+    if (month === 6 && T.isLeap(y)) extra += blankTile(y, 169, 'Leap Day', 'after 28 June, outside the week · civil ' + civilText(civil(y, 169), true));
+    if (month === 13) extra += blankTile(y, len, 'Year Day', 'after 28 December, outside the week · civil ' + civilText(civil(y, len), true));
+    $('exExtra').innerHTML = extra;
+    // detail
+    var tm = T.thirteenMoon(g.y, g.m, g.d), toYD = len - n;
+    $('exDetail').innerHTML = '<div class="t-k">Selected</div><div class="big">' + esc(r.special ? r.label : r.day + ' ' + r.monthName + ' ' + r.year) + '</div>' +
+      '<div class="kv"><span>13-month day</span><span>' + (r.special ? 'none: outside the week' : esc(r.weekday)) + '</span>' +
+      '<span>Civil date</span><span>' + esc(civilText(g, true)) + '</span>' +
+      '<span>Day of year</span><span>' + n + ' of ' + len + '</span>' +
+      '<span>Year Day</span><span>' + (toYD === 0 ? 'today' : 'in ' + toYD + ' day' + (toYD === 1 ? '' : 's')) + '</span>' +
+      '<span>13 Moon</span><span>' + esc(tm.label) + '</span></div>' +
+      (r.special ? '<p class="small" style="margin:0">' + (r.special === 'Year Day' ? 'The 365th day. It has no weekday, so the next day, 1 January, is a Sunday again.' : 'The extra day of a leap year. It has no weekday, so 1 Sol is still a Sunday.') + '</p>' : '');
+    drawStrip();
+    // converters, except the one being typed in
+    if (from !== 'c1') $('cG').value = String(g.y).padStart(4, '0') + '-' + String(g.m).padStart(2, '0') + '-' + String(g.d).padStart(2, '0');
+    if (from !== 'c2') { $('cY').value = y; fillC2(y, r.special === 'Leap Day' ? -1 : r.special === 'Year Day' ? 0 : r.month, r.day || 1); }
+    outC1(); outC2();
+  }
+  function blankTile(y, dn, name, sub) {
+    return '<button type="button" data-n="' + dn + '" aria-selected="' + (dn === sel.n) + '">+1 · ' + name + '<small>' + esc(sub) + '</small></button>';
+  }
+
+  function drawStrip() {
+    var y = sel.y, len = yearLen(y), html = '', lens = [31, T.isLeap(y) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31], at = 0;
+    lens.forEach(function (l, i) { html += '<div class="g" style="left:' + (at / len * 100) + '%;width:' + (l / len * 100) + '%">' + MON3[i] + '</div>'; at += l; });
+    at = 0;
+    tabsFor(y).forEach(function (t, i) {
+      var l = t[2] ? 1 : 28, lab = t[2] ? (t[0] === 'LD' ? 'LD' : 'YD') : t[1].slice(0, 3);
+      html += '<div class="i' + (t[2] ? ' blank' : (Number(t[0].slice(1)) % 2 ? ' odd' : '')) + '" style="left:' + (at / len * 100) + '%;width:' + (t[2] ? 'max(3px,' + (100 / len) + '%)' : (l / len * 100) + '%') + '" title="' + t[1] + '">' + lab + '</div>';
+      at += l;
+    });
+    html += '<div class="cur" style="left:' + ((sel.n - 0.5) / len * 100) + '%"></div>';
+    if (todayRef && todayRef.y === y) html += '<div class="now" style="left:' + ((todayRef.n - 0.5) / len * 100) + '%"></div>';
+    var s = $('strip');
+    s.innerHTML = html;
+    s.setAttribute('aria-valuemax', len); s.setAttribute('aria-valuenow', sel.n);
+    var g = civil(y, sel.n), r = T.ifc(g.y, g.m, g.d);
+    s.setAttribute('aria-valuetext', (r.special ? r.label : r.label) + ', civil ' + civilText(g));
+  }
+
+  function fillC2(y, month, day) {
+    var opts = '';
+    T.IFC_MONTHS.forEach(function (name, i) {
+      opts += '<option value="' + (i + 1) + '">' + name + '</option>';
+      if (i === 5) opts += '<option value="-1"' + (T.isLeap(y) ? '' : ' disabled') + '>Leap Day' + (T.isLeap(y) ? '' : ' (leap years only)') + '</option>';
+    });
+    opts += '<option value="0">Year Day</option>';
+    $('cM').innerHTML = opts; $('cM').value = String(month);
+    var ds = ''; for (var d = 1; d <= 28; d++) ds += '<option value="' + d + '">' + d + '</option>';
+    $('cD').innerHTML = ds; $('cD').value = String(day); $('cD').disabled = month <= 0;
+  }
+  function outC1() {
+    var g = civil(sel.y, sel.n), r = T.ifc(g.y, g.m, g.d);
+    $('c1out').innerHTML = '<b>' + esc(r.special ? r.label : r.label) + '</b><span>' + (r.special ? 'outside the week' : 'a ' + esc(r.weekday) + ' in the 13-month calendar') + '</span>';
+  }
+  function outC2() {
+    var g = civil(sel.y, sel.n);
+    $('c2out').innerHTML = '<b>' + esc(civilText(g, true)) + '</b><span>civil (Gregorian) date</span>';
+  }
+
+  // events
+  $('yPrev').addEventListener('click', function () { moveYear(-1); });
+  $('yNext').addEventListener('click', function () { moveYear(1); });
+  function moveYear(k) {                                   // keep the same 13-month position in the other year
+    var g = civil(sel.y, sel.n), r = T.ifc(g.y, g.m, g.d), y = sel.y + k;
+    if (y < 1 || y > 9999) return;
+    var n = r.special === 'Year Day' ? yearLen(y) : r.special === 'Leap Day' ? (T.isLeap(y) ? 169 : nOfIfc(y, 6, 28)) : nOfIfc(y, r.month, r.day);
+    setSel(y, n);
+  }
+  $('goToday').addEventListener('click', function () { setSel(todayRef.y, todayRef.n); });
+  $('tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-tab]'); if (!b) return;
+    var t = b.getAttribute('data-tab'), y = sel.y, g = civil(y, sel.n), r = T.ifc(g.y, g.m, g.d);
+    if (t === 'LD') setSel(y, 169); else if (t === 'YD') setSel(y, yearLen(y));
+    else setSel(y, nOfIfc(y, Number(t.slice(1)), r.day || 1));
+  });
+  function pick(e) { var b = e.target.closest('button[data-n]'); if (b) { setSel(sel.y, Number(b.getAttribute('data-n'))); var f = document.querySelector('#exGrid button[tabindex="0"], #exExtra button[aria-selected="true"]'); if (f && e.type === 'click') f.focus(); } }
+  $('exGrid').addEventListener('click', pick);
+  $('exExtra').addEventListener('click', pick);
+  function keys(e) {
+    var step = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: 7, ArrowUp: -7, PageDown: 28, PageUp: -28 }[e.key];
+    if (e.key === 'Home') { e.preventDefault(); return setSel(sel.y, 1); }
+    if (e.key === 'End') { e.preventDefault(); return setSel(sel.y, yearLen(sel.y)); }
+    if (!step) return;
+    e.preventDefault();
+    setSel(sel.y, sel.n + step);
+    var f = e.currentTarget.id === 'strip' ? null : document.querySelector('#exGrid button[tabindex="0"], #exExtra button[aria-selected="true"]');
+    if (f) f.focus();
+  }
+  $('exGrid').addEventListener('keydown', keys);
+  $('exExtra').addEventListener('keydown', keys);
+  $('strip').addEventListener('keydown', keys);
+  var dragging = false;
+  function stripAt(e) {
+    var box = $('strip').getBoundingClientRect(), x = Math.min(Math.max(e.clientX - box.left, 0), box.width - 1), len = yearLen(sel.y);
+    var n = Math.floor(x / box.width * len) + 1;
+    if (n !== sel.n) setSel(sel.y, n);
+  }
+  $('strip').addEventListener('pointerdown', function (e) { dragging = true; $('strip').setPointerCapture && $('strip').setPointerCapture(e.pointerId); stripAt(e); });
+  $('strip').addEventListener('pointermove', function (e) { if (dragging) stripAt(e); });
+  $('strip').addEventListener('pointerup', function () { dragging = false; });
+  $('strip').addEventListener('pointercancel', function () { dragging = false; });
+  $('cG').addEventListener('input', function () {
+    var v = $('cG').value; if (!/^\d{4}-\d\d-\d\d$/.test(v)) return;
+    var p = v.split('-').map(Number); if (p[0] < 1) return;
+    setSel(p[0], T.dayOfYear(p[0], p[1], p[2]), 'c1');
+  });
+  function fromC2() {
+    var y = parseInt($('cY').value, 10), m = Number($('cM').value), d = Number($('cD').value) || 1;
+    if (!(y >= 1 && y <= 9999)) return;
+    if (m === -1 && !T.isLeap(y)) m = 6, d = 28;           // no Leap Day this year: nearest real day
+    fillC2(y, m, d);
+    setSel(y, m === -1 ? 169 : m === 0 ? yearLen(y) : nOfIfc(y, m, d), 'c2');
+  }
+  $('cY').addEventListener('input', function () { if ($('cY').value.length >= 4) fromC2(); });   // not on every keystroke of a year
+  ['cY', 'cM', 'cD'].forEach(function (id) { $(id).addEventListener('change', fromC2); });
+  ['c1', 'c2'].forEach(function (id) { $(id).addEventListener('submit', function (e) { e.preventDefault(); }); });
+
+  function startExplore() {
+    var t = today(); todayRef = { y: t.y, n: T.dayOfYear(t.y, t.m, t.d) };
+    setSel(todayRef.y, todayRef.n);
+  }
+  startExplore();
   // re-render after local midnight
   var n = new Date(), ms = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 0, 0, 5) - n;
-  setTimeout(function tick() { render(); setTimeout(tick, 864e5); }, ms);
+  setTimeout(function tick() {
+    render();
+    var t = today(); todayRef = { y: t.y, n: T.dayOfYear(t.y, t.m, t.d) }; drawExplore();
+    setTimeout(tick, 864e5);
+  }, ms);
 
   document.getElementById('themeToggle').addEventListener('click', function () {
     var cur = document.documentElement.getAttribute('data-theme') ||
